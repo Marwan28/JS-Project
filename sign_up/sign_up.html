@@ -22,8 +22,10 @@
               id="sign_up_full_name"
               required
             />
+            <span class="error" id="error_full_name"></span>
             <label>Email Address</label>
             <input type="email" name="email" id="sign_up_email" required />
+            <span class="error" id="error_email"></span>
             <label>Password</label>
             <input
               type="password"
@@ -31,6 +33,7 @@
               id="sign_up_password"
               required
             />
+            <span class="error" id="error_password"></span>
             <label>Confirm Password</label>
             <input
               type="password"
@@ -38,7 +41,7 @@
               id="sign_up_confirm_password"
               required
             />
-            <span id="errorSpan"></span>
+            <span class="error" id="error_confirm_password"></span>
             <label>Phone Number</label>
             <input
               type="number"
@@ -46,8 +49,10 @@
               id="sign_up_phone_number"
               required
             />
+            <span class="error" id="error_phone_number"></span>
             <label>Address</label>
             <input type="text" name="address" id="sign_up_address" required />
+            <span class="error" id="error_address"></span>
             <button type="submit" id="registerBtn">Register</button>
             <p>
               Don't have an account?
