@@ -65,7 +65,12 @@ main {
   flex-direction: column;
   gap: 10px;
 }
-
+label {
+  font-size: 16px;
+  /* font-weight: 300; */
+  margin-bottom: -8px;
+    margin-top: 10px;
+}
 input {
   border-radius: 8px;
   /* width: 250px; */
@@ -78,9 +83,9 @@ input {
 }
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-    /* display: none; <- Crashes Chrome on hover */
-    -webkit-appearance: none;
-    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+  /* display: none; <- Crashes Chrome on hover */
+  -webkit-appearance: none;
+  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
 /* input[type="number"]{
   background-color: red;
@@ -90,10 +95,6 @@ input:focus {
   outline: none;
   /* border: 1px solid rgb(37, 99, 235); */
   border-color: rgb(37, 99, 235);
-}
-#errorSpan {
-  font-size: 16px;
-  color: red;
 }
 #registerBtn {
   margin-top: 30px;
@@ -113,4 +114,9 @@ input:focus {
 a {
   text-decoration: none;
   color: rgb(37, 99, 235);
+}
+.error {
+  color: red;
+  font-size: 14px;
+  margin-top: -16px;
 }
