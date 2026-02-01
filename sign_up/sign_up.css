@@ -65,22 +65,12 @@ main {
   flex-direction: column;
   gap: 10px;
 }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 731c17b60e30ec3b49bdb221a58197edf1b58ebd
 label {
   font-size: 16px;
   /* font-weight: 300; */
   margin-bottom: -8px;
     margin-top: 10px;
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> 72f6d5fada5db3afbb6123af9a7b2e09e7fea051
-=======
->>>>>>> 731c17b60e30ec3b49bdb221a58197edf1b58ebd
 input {
   border-radius: 8px;
   /* width: 250px; */
@@ -93,21 +83,9 @@ input {
 }
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-<<<<<<< HEAD
-<<<<<<< HEAD
   /* display: none; <- Crashes Chrome on hover */
   -webkit-appearance: none;
   margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
-=======
-    /* display: none; <- Crashes Chrome on hover */
-    -webkit-appearance: none;
-    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
->>>>>>> 72f6d5fada5db3afbb6123af9a7b2e09e7fea051
-=======
-  /* display: none; <- Crashes Chrome on hover */
-  -webkit-appearance: none;
-  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
->>>>>>> 731c17b60e30ec3b49bdb221a58197edf1b58ebd
 }
 /* input[type="number"]{
   background-color: red;
@@ -118,16 +96,6 @@ input:focus {
   /* border: 1px solid rgb(37, 99, 235); */
   border-color: rgb(37, 99, 235);
 }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-#errorSpan {
-  font-size: 16px;
-  color: red;
-}
->>>>>>> 72f6d5fada5db3afbb6123af9a7b2e09e7fea051
-=======
->>>>>>> 731c17b60e30ec3b49bdb221a58197edf1b58ebd
 #registerBtn {
   margin-top: 30px;
   border-radius: 8px;
@@ -147,17 +115,8 @@ a {
   text-decoration: none;
   color: rgb(37, 99, 235);
 }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 731c17b60e30ec3b49bdb221a58197edf1b58ebd
 .error {
   color: red;
   font-size: 14px;
   margin-top: -16px;
 }
-<<<<<<< HEAD
-=======
->>>>>>> 72f6d5fada5db3afbb6123af9a7b2e09e7fea051
-=======
->>>>>>> 731c17b60e30ec3b49bdb221a58197edf1b58ebd
