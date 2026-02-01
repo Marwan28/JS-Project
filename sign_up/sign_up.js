@@ -1,12 +1,21 @@
+<<<<<<< HEAD
 import { supabase } from "../supabase/supabase_client.js";
 var registerNewUserData = {
   fullName: "",
   email: "",
   role: "Customer",
+=======
+import { supabase } from '../supabase/supabase_client.js';
+var registerNewUserData = {
+  fullName: "",
+  email: "",
+  role: "user",
+>>>>>>> 72f6d5fada5db3afbb6123af9a7b2e09e7fea051
   address: "",
   phoneNumber: "",
 };
 
+<<<<<<< HEAD
 var fullName;
 var email;
 var address;
@@ -237,4 +246,39 @@ registerBtn.addEventListener("click", function (e) {
     phoneNumberInput.value.trim(),
     addressInput.value.trim(),
   );
+=======
+
+async function getData(tableName) {
+  const { data, error } = await supabase.from(tableName).select('*');
+  if (error) return null;
+  return data;
+}
+getData('profiles').then((data) => {
+  console.log(data);
+});
+
+
+
+
+
+
+document.getElementById("registerBtn").addEventListener("click", function () {
+    document.getElementById("errorSpan").innerHTML = "Invalid email or password";
+  // console.log(registerNewUserData.fullName);
+  // console.log(registerNewUserData.email);
+  // console.log(registerNewUserData.address);
+  // console.log(registerNewUserData.phoneNumber);
+  registerNewUserData.fullName =
+    document.getElementById("sign_up_full_name").value;
+  registerNewUserData.email = document.getElementById("sign_up_email").value;
+  registerNewUserData.address =
+    document.getElementById("sign_up_address").value;
+  registerNewUserData.phoneNumber = document.getElementById(
+    "sign_up_phone_number",
+  ).value;
+  console.log(registerNewUserData.fullName);
+  console.log(registerNewUserData.email);
+  console.log(registerNewUserData.address);
+  console.log(registerNewUserData.phoneNumber);
+>>>>>>> 72f6d5fada5db3afbb6123af9a7b2e09e7fea051
 });
