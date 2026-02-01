@@ -22,16 +22,31 @@
         <form id="form" method="get" action="thanks.html">
           <div class="form_div">
             <label>Email Address</label>
-            <input type="email" name="email" id="email" required />
+            <input type="email" name="email" id="log_in_email" required />
+            <span class="error" id="error_email"></span>
             <label>Password</label>
-            <input type="password" name="password" id="password" required />
-            <span id="errorSpan"></span>
+            <input
+              type="password"
+              name="password"
+              id="log_in_password"
+              required
+            />
+            <span class="error" id="error_password"></span>
             <button type="submit" id="loginBtn">Login</button>
+<<<<<<< Updated upstream
             <p>Don't have an account? <a href="register.html">Register here</a></p>
+=======
+            <p>
+              Don't have an account?
+              <a id="register_link" href="#"
+                >Register here</a
+              >
+            </p>
+>>>>>>> Stashed changes
           </div>
         </form>
       </div>
     </main>
-    <script src="login.js"></script>
+    <script type="module" src="login.js"></script>
   </body>
 </html>
