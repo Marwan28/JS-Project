@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shop Hub</title>
+    <script>
+      const userId = localStorage.getItem("currentUserId");
+      const userRole = localStorage.getItem("currentUserRole");
+
+      if (userId) {
+        if (userRole === "Admin") {
+          window.location.replace("../admin/home/home.html");
+        } else {
+          window.location.replace("../users/home/home.html");
+        }
+      } else {
+        window.location.replace("../login/login.html");
+      }
+    </script>
+  </head>
+  <body></body>
+</html>
