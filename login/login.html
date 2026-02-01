@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="login.css" />
+  </head>
+  <body>
+    <header>
+      <div>Welcome To Shop Hub</div>
+    </header>
+    <main>
+      <div class="main_div">
+        <p>Login to Your Account</p>
+        <form id="form" method="get" action="thanks.html">
+          <div class="form_div">
+            <label>Email Address</label>
+            <input type="email" name="email" id="log_in_email" required />
+            <span class="error" id="error_email"></span>
+            <label>Password</label>
+            <input
+              type="password"
+              name="password"
+              id="log_in_password"
+              required
+            />
+            <span class="error" id="error_password"></span>
+            <button type="submit" id="loginBtn">Login</button>
+            <p>
+              Don't have an account?
+              <a id="register_link" href="#"
+                >Register here</a
+              >
+            </p>
+          </div>
+        </form>
+      </div>
+    </main>
+    <script type="module" src="login.js"></script>
+  </body>
+</html>
