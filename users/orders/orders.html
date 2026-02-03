@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="orders.css" />
+    <script>
+      const userId = localStorage.getItem("currentUserId");
+      if (!userId) {
+        window.location.replace("../../login/login.html");
+      }
+    </script>
+  </head>
+  <body>
+    <header>
+      <div class="welcome">Welcome To Shop Hub</div>
+      <div class="nav_links">
+        <a href="index.html">Home</a>
+        <a href="../products/product_details/product_details.html">Products</a>
+        <a href="../cart/cart.html" id="navCart"
+          >Cart(<span id="cartCount">0</span>)</a
+        >
+        <a href="../wishlist/wishlist.html" id="navWishlist"
+          >Wishlist(<span id="wishlistCount">0</span>)</a
+        >
+        <a href="#" id="orders_link">My Orders</a>
+        <a href="#" id="log_out_link">Log out</a>
+      </div>
+    </header>
+    <main>
+      <div id="user_orders"></div>
+    </main>
+    <script type="module" src="orders.js"></script>
+  </body>
+</html>
