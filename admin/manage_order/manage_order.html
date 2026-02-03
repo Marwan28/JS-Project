@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="manage_order.css" />
+    <script>
+      const userId = localStorage.getItem("currentUserId");
+      if (!userId) {
+        window.location.replace("../../login/login.html");
+      }
+    </script>
+  </head>
+  <body>
+    <header>
+      <div class="welcome">Admin Dashboard</div>
+      <div class="nav_links">
+        <a href="../home/home.html">Home</a>
+        <a href="../manage_product/manage_product.html">Products</a>
+        <a href="../manage_category/manage_category.html">Categories</a>
+        <a href="#" id="orders_link">Orders</a>
+        <a href="#" id="log_out_link">Log out</a>
+      </div>
+    </header>
+    <main>
+      <h2 class="section_title">Manage Orders</h2>
+      <!-- <div class="filters"> -->
+        <div class="filter_group">
+          <label for="statusFilter">Filter by Status:</label>
+          <select id="statusFilter">
+            <option value="all">All Orders</option>
+            <option value="pending">Pending</option>
+            <option value="confirmed">Confirmed</option>
+            <option value="rejected">Rejected</option>
+          </select>
+        </div>
+      <!-- </div> -->
+      <div id="orders"></div>
+    </main>
+    <script type="module" src="manage_order.js"></script>
+  </body>
+</html>

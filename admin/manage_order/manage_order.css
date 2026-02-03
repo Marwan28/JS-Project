@@ -1,0 +1,204 @@
+body {
+  background-color: rgb(248, 250, 252);
+  margin: 0;
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 80px;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  justify-content: space-around;
+  display: flex;
+}
+
+.welcome {
+  display: flex;
+  /* text-align: center; */
+
+  color: rgb(37, 99, 235);
+  font-size: 30px;
+  font-weight: 900;
+}
+.nav_links {
+  /* background-color: red; */
+  width: 30%;
+  /* background-color: yellow; */
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  /* align-items: space-between; */
+}
+.nav_links a {
+  text-decoration: none;
+  /* color: green; */
+  color: rgb(37, 99, 235);
+  font-weight: 500;
+  transition: color 0.3s;
+  /* background-color: red; */
+}
+.nav_links a:hover,
+.nav_links a:active {
+  color: blueviolet;
+}
+
+main {
+  margin-top: 80px;
+  padding-top: 20px;
+  /* height: calc(100vh - 80px); */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* background-color: red; */
+  /* background-color: green; */
+}
+
+.order_card {
+  width: 80vw;
+  background: white;
+  padding: 2rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.order_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid black;
+}
+
+.order_id {
+  font-weight: 600;
+  color: black;
+}
+.order_status {
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.order_status.pending {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.order_status.confirmed {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.order_status.rejected {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+.order_items {
+  margin-bottom: 1rem;
+}
+
+.order_item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+}
+
+.order_footer {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 2px solid black;
+}
+
+.order_total {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: rgb(37, 99, 235);
+}
+/* .order_footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+} */
+
+.order_actions {
+  display: flex;
+  gap: 10px;
+}
+
+.confirm_btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin-top: 0.5rem;
+  background-color: #10b981;
+  color: white;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s;
+  border: none;
+  font-size: 1rem;
+}
+
+.reject_btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin-top: 0.5rem;
+  background-color: #ef4444;
+  color: white;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s;
+  border: none;
+  font-size: 1rem;
+}
+
+.filter_group {
+  background: white;
+  padding: 2rem;
+  border-radius: 0.75rem;
+  margin-bottom: 2rem;
+  width: 80vw;
+  /* flex-wrap: wrap; */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter_group label {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #1e293b;
+}
+
+.filter_group select {
+  padding: 0.5rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+}
