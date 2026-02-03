@@ -1,0 +1,139 @@
+   
+   
+body{  
+    background-color:#f9fafc;
+}
+   
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+    
+}    
+
+.navbar {
+
+  width: 100%;
+  /* backdrop-filter: blur(10px); */
+  position: fixed;
+  height: 70px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* background-color: white; */
+  color:black;
+  padding: 15px 40px;
+  /* position: sticky; */
+  top: 0;
+
+
+}
+
+.logo {
+  color: blue;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  font-size: 16px;
+  color: black;
+}
+
+.nav-links a:hover {
+   color: blue;  
+}
+
+#BG-img{
+  width: 100%;               
+  height: 400px;  
+  background-image: url("imgs/finalImg.png"); 
+  background-size: cover;       
+  background-position: center; 
+  background-repeat: no-repeat; 
+  display: flex;              
+  justify-content:left; 
+  align-items: left;
+  text-align: center;
+  /* color: white;                 */
+  padding-top: 10px;
+}
+
+
+#BG-text{
+    margin-top:100px;
+    margin-left:10px;
+
+}
+ #BG-text h1{
+    font-size: 35px;
+    line-height: 30px;
+        font-weight: bold;
+
+}
+
+.btn:hover{
+   translate: translateY(-2px);
+
+}
+ 
+#categories{
+}
+
+.category-card{
+  width: 100px;
+  height: 250px;
+}
+.btn{
+
+}
+.categoryCard{
+    color: blue;
+    font-size: 25px;
+    font-weight: bold;
+
+    width: 200px;
+    background: white;
+    padding: 2rem;
+    border-radius: 0.75rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    display: inline;
+    width: 200px;
+  height: 120px;
+   
+}
+.categoryCard:hover {
+transform: translateY(-5px);
+box-shadow:0 10px 20px rgba(0, 0, 0, 0.1);
+
+}
+.section-title{
+  /* margin: 20px; */
+  font-weight: bold;
+  font-size: 30px;
+}
+
+  #categoriesGrid{
+    padding: 50px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+
+  }
+  .section{
+    margin: 20px;
+  }
+  
