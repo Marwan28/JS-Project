@@ -66,17 +66,20 @@ function loadOrders(orders) {
           ${order.order_products
             .map((order_product) => {
               var itemTotal =
-                order_product.quantity * order_product.product.price;
+                order_product.quantity *
+                (order_product.product.price -
+                  order_product.product.price *
+                    (order_product.product.sale_prectenage / 100));
               total += itemTotal;
               return `<div class="order_item">
           <span>${order_product.product.name} x ${order_product.quantity} <div>${order.status === "pending" ? "(In stock: " + order_product.product.stock_quantity + ")" : ""}</div></span>
-          <span>$${itemTotal}</span>
+          <span>$${itemTotal.toFixed(2)}</span>
           </div>`;
             })
             .join("")}
           </div>
           <div class="order_footer">
-            <div class="order_total">Total: $${total}</div>
+            <div class="order_total">Total: $${total.toFixed(2)}</div>
             ${
               order.status === "pending"
                 ? `
@@ -125,9 +128,11 @@ window.updateOrderStatus = async function (button, newStatus) {
     try {
       if (newStatus === "confirmed") {
         order.order_products.forEach(async (element) => {
+          const old_item_sold = element.product.item_sold;
           const old_stock = element.product.stock_quantity;
           const quantity = element.quantity;
           const new_stock = old_stock - quantity;
+          const new_item_sold = old_item_sold + quantity;
           console.log(element.product.name);
           console.log(element.product_id);
           console.log(element.product.id);
@@ -140,7 +145,10 @@ window.updateOrderStatus = async function (button, newStatus) {
             {
               method: "PATCH",
               headers: headers,
-              body: JSON.stringify({ stock_quantity: new_stock }),
+              body: JSON.stringify({
+                stock_quantity: new_stock,
+                item_sold: new_item_sold,
+              }),
             },
           );
         });

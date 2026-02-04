@@ -106,11 +106,36 @@ const headers = {
   "Content-Type": "application/json",
 };
 var orders = [];
+var userRatingsProductsIds = [];
+var filteredOrders = [];
 var mainDiv = document.getElementById("user_orders");
+var statusFilter = document.getElementById("statusFilter");
+statusFilter.addEventListener("change", loadFilteredOrders);
+function loadFilteredOrders() {
+  var selectedStatus = statusFilter.value;
+  if (selectedStatus === "all" || selectedStatus === "") {
+    filteredOrders = orders;
+  } else {
+    filteredOrders = orders.filter((order) => order.status === selectedStatus);
+  }
+  console.log("Filtered orders:", filteredOrders);
+  loadOrders(filteredOrders);
+}
 
-getWishlistCount(userId);
-getCartCount(userId);
-getAllOrders(userId);
+window.onload = function () {
+  loadData();
+};
+async function loadData() {
+  await getAllUserRatings(userId);
+  await getAllOrders(userId);
+  await getWishlistCount(userId);
+  await getCartCount(userId);
+}
+// getAllUserRatings(userId);
+// getAllOrders(userId);
+// getWishlistCount(userId);
+// getCartCount(userId);
+
 async function getWishlistCount(id) {
   try {
     const response = await fetch(
@@ -163,7 +188,7 @@ async function getCartCount(id) {
 async function getAllOrders(id) {
   try {
     const response = await fetch(
-      `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/orders?customer_id=eq.${id}&select=*,order_products(*,product(*))`,
+      `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/orders?customer_id=eq.${id}&select=*,order_products(*,product(*))&order=id.asc`,
       {
         method: "GET",
         headers: headers,
@@ -176,11 +201,44 @@ async function getAllOrders(id) {
     }
     console.log("orders");
     console.log(orders);
+    loadOrders(orders);
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+  }
+}
 
-    mainDiv.innerHTML = orders
-      .map((order) => {
-        var total = 0;
-        return `
+async function getAllUserRatings(id) {
+  try {
+    const response = await fetch(
+      `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/rating?customer_id=eq.${id}&order=id.asc`,
+      {
+        method: "GET",
+        headers: headers,
+      },
+    );
+    var userFullRatings = await response.json();
+    userFullRatings.map((userRating) => {
+      userRatingsProductsIds.push(userRating.product_id);
+    });
+    if (!Array.isArray(userRatingsProductsIds)) {
+      console.error("Supabase Error:", userRatingsIds);
+      return;
+    }
+    console.log("userRatingsProductsIds");
+    console.log(userRatingsProductsIds);
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+  }
+}
+function loadOrders(orders) {
+  if (!orders || orders.length === 0) {
+    mainDiv.innerHTML = "<p>No orders found</p>";
+    return;
+  }
+  mainDiv.innerHTML = orders
+    .map((order) => {
+      var total = 0;
+      return `
         <div class="order_card">
           <div class="order_header">
             <div>
@@ -193,23 +251,122 @@ async function getAllOrders(id) {
           ${order.order_products
             .map((order_product) => {
               var itemTotal =
-                order_product.quantity * order_product.product.price;
+                order_product.quantity *
+                (order_product.product.price -
+                  order_product.product.price *
+                    (order_product.product.sale_prectenage / 100));
               total += itemTotal;
               return `<div class="order_item">
-          <span>${order_product.product.name} x ${order_product.quantity}</span>
-          <span>$${itemTotal}</span>
+          <span>${order_product.product.name} x ${order_product.quantity}<div>${
+            order.status === "confirmed" &&
+            !userRatingsProductsIds.includes(order_product.product_id)
+              ? "<button class='open_popup_btn' onClick='openRatePopUp(" +
+                JSON.stringify(order_product) +
+                ")'>rate</button>"
+              : ""
+          }</div></span>
+          <span>$${itemTotal.toFixed(2)}</span>
           </div>`;
             })
             .join("")}
           </div>
           <div class="order_footer">
-            <div class="order_total">Total: $${total}</div>
+            <div class="order_total">Total: $${total.toFixed(2)}</div>
           </div>
         </div>
         `;
-      })
-      .join("");
-  } catch (error) {
-    console.error("Error fetching orders:", error);
-  }
+    })
+    .join("");
 }
+// window.mouseOnStar = function (img) {
+//   for (var i = 0; i <= img.dataset.index; i++) {
+//     if (stars[i].dataset.clicked == "0") {
+//       stars[i].src = "images/filled_star.png";
+//     }
+//   }
+// };
+// window.mouseOutStar = function (img) {
+//   for (var i = 0; i <= img.dataset.index; i++) {
+//     if (stars[i].dataset.clicked == "0") {
+//       stars[i].src = "images/empty_star.png";
+//     }
+//   }
+// };
+var score = 0;
+var comment = null;
+var rateProductId = null;
+var ratingSelect = document.getElementById("ratingSelect");
+var ratingComment = document.getElementById("ratingComment");
+var submit_popup_btn = document.getElementById("submit_popup_btn");
+var close_popup_btn = document.getElementById("close_popup_btn");
+
+ratingSelect.addEventListener("change", function (e) {
+  score = e.target.value;
+  console.log(score);
+});
+window.openRatePopUp = function (product) {
+  document.getElementById("popupOverlay").style.display = "flex";
+  score = ratingSelect.value;
+  rateProductId = product.product_id;
+  console.log(score);
+  console.log(rateProductId);
+
+  console.log(product);
+  // const pasredProduct = JSON.parse(product);
+  // console.log(pasredProduct);
+};
+
+// window.openPopup = function() {
+//   document.getElementById("popupOverlay").style.display = "flex";
+// }
+
+window.closePopup = function () {
+  score = 0;
+  comment = null;
+  ratingSelect.value = 5;
+  rateProductId = null;
+  console.log(score);
+  console.log(comment);
+  console.log(rateProductId);
+
+  document.getElementById("popupOverlay").style.display = "none";
+};
+// document.getElementById("popupOverlay").addEventListener("click", function(e){
+//   if(e.target.id === "popupOverlay"){
+//     closePopup();
+//   }
+// });
+window.submitRating = async function () {
+  comment = ratingComment.value;
+  console.log(comment + score);
+  if (!comment) {
+    alert("please write your feedback");
+    return;
+  }
+  try {
+    const response = await fetch(
+      `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/rating`,
+      {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify({
+          customer_id: userId,
+          product_id: rateProductId,
+          score: score,
+          comment: comment,
+        }),
+      },
+    );
+    // getData();
+    loadData();
+    alert(`you gived this product ${score} stars`);
+    closePopup();
+  } catch (e) {
+    console.log(e);
+  }
+  // getAllUserRatings(userId);
+  // getAllOrders(userId);
+
+  // var rating = await response.json();
+  // console.log(rating);
+};

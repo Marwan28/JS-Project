@@ -29,7 +29,40 @@
       </div>
     </header>
     <main>
-      <div id="user_orders"></div>
+      <h2 class="section_title">My Orders</h2>
+      <div class="filter_group">
+        <label for="statusFilter">Filter by Status:</label>
+        <select id="statusFilter">
+          <option value="all">All Orders</option>
+          <option value="pending">Pending</option>
+          <option value="confirmed">Confirmed</option>
+          <option value="rejected">Rejected</option>
+        </select>
+      </div>
+      <div id="user_orders"><div class="Loading_placeholder">Loading....</div></div>
+
+      <div id="popupOverlay" class="overlay">
+        <div class="popup">
+          <div class="rating_group">
+            <label for="ratingSelect">Choose Rate:</label>
+            <select id="ratingSelect">
+              <option value="5">⭐⭐⭐⭐⭐</option>
+              <option value="4">⭐⭐⭐⭐</option>
+              <option value="3">⭐⭐⭐</option>
+              <option value="2">⭐⭐</option>
+              <option value="1">⭐</option>
+            </select>
+          </div>
+          <div class="rating_group">
+            <label for="ratingComment">Write your review:</label>
+            <textarea id="ratingComment" placeholder="Feel free ..."></textarea>
+          </div>
+          <div class="rating_group_buttons">
+            <button class="submit_btn" id="submit_popup_btn" onclick="submitRating()">Submit</button>
+            <button class="cancel_btn" id="close_popup_btn" onclick="closePopup()">Cancel</button>
+          </div>
+        </div>
+      </div>
     </main>
     <script type="module" src="orders.js"></script>
   </body>
