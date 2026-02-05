@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Products</title>
+    <link rel="stylesheet" href="products.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+  </head>
+  <body>
+    <header class="page-header">
+      <nav class="header-nav" aria-label="Main navigation">
+        <!-- Navigation will be added later -->
+      </nav>
+      <div class="header-actions">
+        <div class="search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input
+            type="text"
+            name="search"
+            placeholder="Search products..."
+            id="search"
+          />
+        </div>
+        <div class="sort-wrapper">
+          <select id="sortby">
+            <option disabled selected>Sort by</option>
+            <option value="price_desc">Price: High to Low</option>
+            <option value="price_asc">Price: Low to High</option>
+            <option value="newest">Newest First</option>
+            <option value="name_asc">Name (A - Z)</option>
+            <option value="name_desc">Name (Z - A)</option>
+          </select>
+        </div>
+      </div>
+    </header>
+
+    <div class="toolbar">
+      <div class="stats">
+        <p id="count"></p>
+      </div>
+      <div class="clearFilters">Clear All Filters</div>
+    </div>
+
+    <div class="page">
+      <div class="filter">
+        <h2>Filters</h2>
+        <div class="filter-category">
+          <h3>Categories</h3>
+          <input type="radio" name="category" id="all" checked />
+          <label for="all">All</label><br />
+          <input type="radio" name="category" id="laptops" />
+          <label for="laptops">Laptops</label><br />
+          <input type="radio" name="category" id="electronics" />
+          <label for="electronics">Electronics</label><br />
+          <input type="radio" name="category" id="mobile" />
+          <label for="mobile">Mobile</label><br />
+          <input type="radio" name="category" id="accessories" />
+          <label for="accessories">Accessories</label><br />
+          <input type="radio" name="category" id="audio" />
+          <label for="audio">Audio</label>
+        </div>
+        <div class="pricerange">
+          <h3>Price Range</h3>
+          <input type="range" name="price_range" id="" max="14000" min="100" />
+          <div class="price-values">
+            <span>From: <strong id="minPrice">100</strong> LE</span>
+            <span>To: <strong id="maxPrice">14000</strong> LE</span>
+          </div>
+        </div>
+        <div id="filterrating">
+          <h3>Rating</h3>
+        </div>
+      </div>
+      <div class="rightpart">
+        <div id="products"></div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module" src="products.js"></script>
+  </body>
+</html>
