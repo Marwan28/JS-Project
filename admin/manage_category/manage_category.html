@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Categories</title>
+    <link rel="stylesheet" href="category.css">
+</head>
+<body>
+
+
+    <nav class="navbar"><div class="nav">
+            <div class="logo">🛒 ShopHub Admin</div>
+            <ul class="nav-links">
+            <li><a href="home.html">Dashboard</a></li>
+            <li><a href="product\products_page.html">Products</a></li>
+            <li><a href="#">Categories</a></li>
+            <li><a href="#">Orders</a></li>
+            <li><a href="#" >Logout</a></li>
+            </ul></div>
+        </nav>
+
+        <section class="content">
+
+    <div class="header">
+        <h1>Manage Categories (<span id="yello">0</span>)</h1>
+        <button class="btn-add">Add New Category</button>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Image</th> <th>Name</th>
+                    <th>Product Count</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+            <tbody id="categoriesTableBody"></tbody>
+        </table>
+    </div>
+     </section>
+
+    <!-- popup -->
+
+    <div id="modalOverlay" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Add New Category</h2>
+            <span id="btnClose" class="close-icon">&times;</span>
+        </div>
+        <div class="modal-body">
+            <label>Category Name *</label>
+            <input type="text" id="catInput" placeholder="Enter category name">
+            <span id="nameError" class="error-text">Category name is required</span>
+
+            <label style="margin-top: 15px; display: block;">Image URL *</label>
+            <input type="text" id="imgInput" placeholder="Enter image URL">
+            <span id="imgError" class="error-text">Image URL is required</span>
+        </div>
+        <div class="modal-footer">
+            <button id="btnCancel" class="btn-cancel">Cancel</button>
+            <button id="btnSave" class="btn-save">Save Category</button>
+        </div>
+    </div>
+</div>
+
+<!-- delet catgory popUp -->
+
+<div id="deleteModal" class="modal-overlay">
+    <div class="modal-content" style="width: 350px; text-align: center;">
+        <div style="font-size: 50px; color: #dc3545; margin-bottom: 15px;">&times;</div>
+        <h2>Are you sure?</h2>
+        <p>Do you really want to delete this category? This action cannot be undone.</p>
+        <div class="modal-footer" style="justify-content: center; margin-top: 20px;">
+            <button id="btnCancelDelete" class="btn-cancel">Cancel</button>
+            <button id="btnConfirmDelete" class="btn-delete" style="padding: 10px 20px;">Delete</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- edit catgory popUp -->
+
+<div id="editModal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Edit Category</h2>
+            <span id="btnEditClose" class="close-icon">&times;</span>
+        </div>
+        <div class="modal-body">
+            <label>Category Name *</label>
+            <input type="text" id="editCatInput" placeholder="Update category name">
+            <span id="editNameError" class="error-text">Category name is required</span>
+
+            <label style="margin-top: 15px; display: block;">Image URL *</label>
+            <input type="text" id="editImgInput" placeholder="Update image URL">
+            <span id="editImgError" class="error-text">Image URL is required</span>
+        </div>
+        <div class="modal-footer">
+            <button id="btnEditCancel" class="btn-cancel">Cancel</button>
+            <button id="btnUpdateSave" class="btn-save">Update Category</button>
+        </div>
+    </div>
+</div>
+
+    <script src="category.js"></script>
+</body>
+</html>
