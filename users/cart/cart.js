@@ -92,7 +92,6 @@ function displayCardProducts() {
   }
 
   if (totalItems === 0) {
-    renderEmptyState();
     updateOrderSummary();
     return;
   }
@@ -102,8 +101,6 @@ function displayCardProducts() {
     `Shopping Cart <span>(${totalItems} items)</span>`;
   updateOrderSummary();
 }
-
-
 
 function updateOrderSummary() {
   let subtotal = 0;
@@ -130,14 +127,12 @@ function updateOrderSummary() {
     }
   }
 
-  const tax = subtotal * 0.08;
-  const total = subtotal + tax;
+  const total = subtotal;
 
   document.getElementById("item-count").textContent = `(${itemCount} items)`;
   document.getElementById("subtotal").textContent = `${subtotal.toFixed(2)} LE`;
   document.getElementById("savings").textContent =
     `-${totalSavings.toFixed(2)} LE`;
-  document.getElementById("tax").textContent = `${tax.toFixed(2)} LE`;
   document.getElementById("total").textContent = `${total.toFixed(2)} LE`;
 }
 //remove item from cart
@@ -248,7 +243,114 @@ window.decrementQuantity = async function (button) {
   }
 };
 
+// make an order (order table)
+async function makeOrder(customerId) {
+  const createResponse = await fetch(
+    `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/orders`,
+    {
+      method: "POST",
+      headers: {
+        apikey: supabaseKey,
+        Authorization: `Bearer ${supabaseKey}`,
+        "Content-Type": "application/json",
+        Prefer: "return=representation",
+      },
+      body: JSON.stringify({
+        customer_id: customerId,
+        status: "pending",
+      }),
+    },
+  );
+  const neworder = await createResponse.json();
+  console.log(neworder[0]);
+  return neworder[0];
+}
+// makeOrder('13318068-cf50-4999-9e39-a799c2553ffb')
+// add the cartproduct for each user to order-product table
+async function checkout(customerId) {
+  const order = await makeOrder(customerId);
+  if (!order || !order.id) {
+    console.error("Failed to create order.");
+    return;
+  }
+  var ordernumber = order.id;
+  console.log("Order ID:", ordernumber);
+  for (var cart of cartProducts) {
+    for (var item of cart.cart_products) {
+      const lookupResponse = await fetch(
+        `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/order_products?select=quantity&order_id=eq.${ordernumber}&product_id=eq.${item.product.id}`,
+        {
+          headers: {
+            apikey: supabaseKey,
+            Authorization: `Bearer ${supabaseKey}`,
+          },
+        },
+      );
+
+      // if (!lookupResponse.ok) {
+      //   const errorText = await lookupResponse.text();
+      //   console.error("Lookup failed:", lookupResponse.status, errorText);
+      //   continue;
+      // }
+
+      const existing = await lookupResponse.json();
+      if (existing.length > 0) {
+        const newQuantity = existing[0].quantity + item.quantity;
+        const updateResponse = await fetch(
+          `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/order_products?order_id=eq.${ordernumber}&product_id=eq.${item.product.id}`,
+          {
+            method: "PATCH",
+            headers: {
+              apikey: supabaseKey,
+              Authorization: `Bearer ${supabaseKey}`,
+              "Content-Type": "application/json",
+              Prefer: "return=representation",
+            },
+            body: JSON.stringify({
+              quantity: newQuantity,
+            }),
+          },
+        );
+
+        const updated = await updateResponse.json();
+        console.log("Updated:", updated);
+      } else {
+        const insertResponse = await fetch(
+          `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/order_products`,
+          {
+            method: "POST",
+            headers: {
+              apikey: supabaseKey,
+              Authorization: `Bearer ${supabaseKey}`,
+              "Content-Type": "application/json",
+              Prefer: "return=representation",
+            },
+            body: JSON.stringify({
+              order_id: ordernumber,
+              product_id: item.product.id,
+              quantity: item.quantity,
+            }),
+          },
+        );
+
+        if (!insertResponse.ok) {
+          console.error(
+            "Failed to insert order product:",
+            insertResponse.status,
+          );
+          continue;
+        }
+
+        const inserted = await insertResponse.json();
+        console.log("Inserted:", inserted);
+      }
+    }
+  }
+}
 // go to order page
-document.querySelector(".checkout-btn").addEventListener("click", function () {
-  location.href = `../orders/orders.html`;
-});
+document
+  .querySelector(".checkout-btn")
+  .addEventListener("click", async function () {
+    await checkout(customerId);
+    // location.href = `../orders/orders.html`;
+  });
