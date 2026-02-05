@@ -251,7 +251,7 @@ async function getProductReviews() {
   }
 }
 
-var customerId = "cda4818f-0913-408e-9194-060673fe810f";
+var customerId = "13318068-cf50-4999-9e39-a799c2553ffb";
 async function createCartToCustomer(customerId) {
   //check
   const checkResponse = await fetch(
