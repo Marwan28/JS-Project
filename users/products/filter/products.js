@@ -130,7 +130,6 @@ async function createCartToCustomer(customerId) {
   return newCart[0];
 }
 
-
 if (customerId) {
   getCartCount(customerId);
   getWishlistCount(customerId);
@@ -254,11 +253,6 @@ window.addToWishlist = async function (event) {
   var heart = event.target;
   var productId = heart.dataset.id;
 
-  // Toggle heart icon to solid red
-  heart.classList.remove("fa-regular");
-  heart.classList.add("fa-solid");
-  heart.style.color = "red";
-
   for (var product of products) {
     if (product.id == productId) {
       var wishlistobj = await createWhisListToCustomer(customerId);
@@ -274,26 +268,25 @@ window.addToWishlist = async function (event) {
         },
       );
       const existingItem = await checkResponse.json();
-
       if (existingItem && existingItem.length > 0) {
-        const updateResponse = await fetch(
+        const deleteResponse = await fetch(
           `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/wishlist_products?wishlist_id=eq.${wishlistobj.id}&product_id=eq.${product.id}`,
           {
-            method: "PATCH",
+            method: "DELETE",
             headers: {
               apikey: supabaseKey,
               Authorization: `Bearer ${supabaseKey}`,
-              "Content-Type": "application/json",
             },
-            body: JSON.stringify({
-              quantity: currentQuantity,
-            }),
           },
         );
-        const data = await updateResponse.json();
-        console.log("Wishlist Updated:", data);
-
-        return data;
+        if (deleteResponse.ok) {
+          heart.classList.remove("fa-solid");
+          heart.classList.add("fa-regular");
+          heart.style.color = "";
+          await getWishlistCount(customerId);
+          console.log("Wishlist Removed");
+        }
+        return null;
       } else {
         const response = await fetch(
           `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/wishlist_products`,
@@ -312,12 +305,17 @@ window.addToWishlist = async function (event) {
           },
         );
         const data = await response.json();
+        heart.classList.remove("fa-regular");
+        heart.classList.add("fa-solid");
+        heart.style.color = "red";
+        await getWishlistCount(customerId);
         console.log("Wishlist Inserted:", data);
         return data;
       }
     }
   }
 };
+
 //get wishlist count&cartcount
 var wishlistCount = document.getElementById("wishlistCount");
 var cartCount = document.getElementById("cartCount");
