@@ -2,7 +2,7 @@ import { supabaseKey } from "../../../supabase/supabase_client.js";
 var cartProducts;
 async function getCartData(customerId) {
   const response = await fetch(
-    `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/cart?customer_id=eq.${customerId}&select=cart_products(quantity,product(id,name,price,image,description,sale_prectenage))`,
+    `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/cart?customer_id=eq.${customerId}&select=cart_products(cart_id,quantity,product(id,name,price,image,description,sale_prectenage))`,
     {
       headers: {
         apikey: supabaseKey,
@@ -16,7 +16,7 @@ async function getCartData(customerId) {
   console.log("Cart products:", cartProducts);
 }
 
-var customerId = "13318068-cf50-4999-9e39-a799c2553ffb";
+var customerId = localStorage.getItem("currentUserId");
 getCartData(customerId);
 
 function displayCardProducts() {
@@ -266,7 +266,7 @@ async function makeOrder(customerId) {
   return neworder[0];
 }
 // makeOrder('13318068-cf50-4999-9e39-a799c2553ffb')
-// add the cartproduct for each user to order-product table
+// add the cartproducts for each user to order-product table
 async function checkout(customerId) {
   const order = await makeOrder(customerId);
   if (!order || !order.id) {
@@ -346,11 +346,49 @@ async function checkout(customerId) {
       }
     }
   }
+  await clearUserCart();
+}
+// clear cart
+async function clearUserCart() {
+  if (!cartProducts || cartProducts.length === 0) {
+    return;
+  }
+
+  const cartIds = new Set();
+  for (var cart of cartProducts) {
+    if (cart.cart_products && cart.cart_products.length > 0) {
+      cartIds.add(cart.cart_products[0].cart_id);
+    }
+  }
+
+  for (const cartId of cartIds) {
+    const response = await fetch(
+      `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/cart_products?cart_id=eq.${cartId}`,
+      {
+        method: "DELETE",
+        headers: {
+          apikey: supabaseKey,
+          Authorization: `Bearer ${supabaseKey}`,
+          "Content-Type": "application/json",
+          Prefer: "return=representation",
+        },
+      },
+    );
+
+    if (!response.ok) {
+      alert("Failed to clear cart:", response.status);
+    }
+  }
+
+  for (var cart of cartProducts) {
+    cart.cart_products = [];
+  }
+  displayCardProducts();
 }
 // go to order page
 document
   .querySelector(".checkout-btn")
   .addEventListener("click", async function () {
     await checkout(customerId);
-    // location.href = `../orders/orders.html`;
+    location.href = `../orders/orders.html`;
   });

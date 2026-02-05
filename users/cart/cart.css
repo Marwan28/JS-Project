@@ -13,6 +13,48 @@ body {
   color: #0f172a;
   padding: 36px 56px 60px;
 }
+/* site header */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 80px;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  justify-content: space-around;
+  display: flex;
+  z-index: 1000;
+}
+
+.site-header .welcome {
+  display: flex;
+  color: rgb(37, 99, 235);
+  font-size: 30px;
+  font-weight: 900;
+}
+
+.nav_links {
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  white-space: nowrap;
+}
+
+.nav_links a {
+  text-decoration: none;
+  color: rgb(37, 99, 235);
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.nav_links a:hover,
+.nav_links a:active {
+  color: blueviolet;
+}
 
 h2 {
   display: flex;
