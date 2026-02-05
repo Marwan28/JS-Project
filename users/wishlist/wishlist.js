@@ -15,7 +15,8 @@ async function getWishListProducts(customerId) {
   displayWishListProducts();
   console.log("wishlist products:", wishlistProducts);
 }
-getWishListProducts("13318068-cf50-4999-9e39-a799c2553ffb");
+var customerId = localStorage.getItem("currentUserId");
+getWishListProducts(customerId);
 
 function displayWishListProducts() {
   var container = document.getElementById("favproducts");
@@ -61,11 +62,10 @@ function displayWishListProducts() {
         </div>
         <div class="cartFav">
           <i class="fa-solid fa-heart" data-product-id=${product.id} onclick='removeProductFromWishlist(this)'></i>
-          <div class="button" onclick='addToCart(${product})'>
-            <i class="fa-solid fa-cart-shopping"></i>
-            <h4>Add To Cart</h4>
-          </div>
+        <div class="button" onclick='addToCart(event)' data-id='${product.id}' data-quantity="0">
+          <h4>Add To Cart</h4>
         </div>
+        
       </div>
     `;
       container.innerHTML += wishlistProduct;
@@ -97,7 +97,7 @@ window.removeProductFromWishlist = async function (button) {
           cart.wishlist_products = cart.wishlist_products.filter(
             (item) => item.product.id != productId,
           );
-
+          await getWishlistCount(customerId);
           displayWishListProducts();
         } else {
           console.error("Delete failed:", response.status);
@@ -105,6 +105,214 @@ window.removeProductFromWishlist = async function (button) {
 
         //stop loop if find item
         return;
+      }
+    }
+  }
+};
+var products;
+export async function supabaseGet(url) {
+  const res = await fetch(url, {
+    headers: {
+      apikey: supabaseKey,
+      Authorization: "Bearer " + supabaseKey,
+    },
+  });
+  return res.json();
+}
+
+async function getAllProductswithRates() {
+  products = await supabaseGet(
+    `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/product`,
+  );
+  console.log(products);
+}
+getAllProductswithRates();
+
+//get wishlist count&cartcount
+var wishlistCount = document.getElementById("wishlistCount");
+var cartCount = document.getElementById("cartCount");
+async function getWishlistCount(id) {
+  try {
+    const response = await fetch(
+      `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/wishlist?customer_id=eq.${id}&select=*,wishlist_products(*)`,
+      {
+        method: "GET",
+        headers: {
+          apikey: supabaseKey,
+          Authorization: `Bearer ${supabaseKey}`,
+        },
+      },
+    );
+    var wishlist = await response.json();
+    if (wishlist.length === 0) {
+      wishlistCount.innerHTML = 0;
+    } else {
+      wishlistCount.innerHTML = wishlist[0].wishlist_products.length;
+      console.log("wishlist");
+      console.log(wishlist);
+      console.log(wishlist[0].wishlist_products.length);
+    }
+  } catch (error) {
+    console.log(error);
+    wishlistCount.innerHTML = 0;
+  }
+}
+async function getCartCount(id) {
+  try {
+    const response = await fetch(
+      `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/cart?customer_id=eq.${id}&select=*,cart_products(*)`,
+      {
+        method: "GET",
+        headers: {
+          apikey: supabaseKey,
+          Authorization: `Bearer ${supabaseKey}`,
+        },
+      },
+    );
+    var cart = await response.json();
+    if (cart.length === 0) {
+      cartCount.innerHTML = 0;
+      console.log("cart is empty");
+    } else {
+      cartCount.innerHTML = cart[0].cart_products.length;
+      console.log("cart");
+      console.log(cart);
+
+      console.log(cart[0].cart_products.length);
+    }
+  } catch (error) {
+    console.log(error);
+    cartCount.innerHTML = 0;
+  }
+}
+if (customerId) {
+  getCartCount(customerId);
+  getWishlistCount(customerId);
+}
+//creat cart for customer
+var defaultQuantity = 1;
+async function createCartToCustomer(customerId) {
+  //check
+  const checkResponse = await fetch(
+    `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/cart?customer_id=eq.${customerId}`,
+    {
+      method: "GET",
+      headers: { apikey: supabaseKey, Authorization: `Bearer ${supabaseKey}` },
+    },
+  );
+
+  const existingCart = await checkResponse.json();
+
+  // Return existing cart if found
+  if (existingCart && existingCart.length > 0) {
+    return existingCart[0];
+  }
+
+  // Create new cart if not found
+  const createResponse = await fetch(
+    `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/cart`,
+    {
+      method: "POST",
+      headers: {
+        apikey: supabaseKey,
+        Authorization: `Bearer ${supabaseKey}`,
+        "Content-Type": "application/json",
+        Prefer: "return=representation",
+      },
+      body: JSON.stringify({ customer_id: customerId }),
+    },
+  );
+
+  const newCart = await createResponse.json();
+
+  return newCart[0];
+}
+// createCartToCustomer(customerId);
+async function parseJsonSafe(response) {
+  if (!response) {
+    return null;
+  }
+  if (response.status === 204) {
+    return null;
+  }
+  const text = await response.text();
+  if (!text) {
+    return null;
+  }
+  try {
+    return JSON.parse(text);
+  } catch (error) {
+    console.error("Invalid JSON response:", error);
+    return null;
+  }
+}
+window.addToCart = async function (event) {
+  // event.stopPropagation(); // Prevent card click navigation
+  var button = event.target.closest(".button");
+  var productId = button.dataset.id;
+
+  // console.log(productId)
+  for (var product of products) {
+    if (product.id == productId) {
+      var cartobj = await createCartToCustomer(customerId);
+
+      // check if product found the cart or not
+      const checkResponse = await fetch(
+        `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/cart_products?cart_id=eq.${cartobj.id}&product_id=eq.${product.id}`,
+        {
+          method: "GET",
+          headers: {
+            apikey: supabaseKey,
+            Authorization: `Bearer ${supabaseKey}`,
+          },
+        },
+      );
+      const existingItem = await parseJsonSafe(checkResponse);
+      // if found.update only
+      if (existingItem && existingItem.length > 0) {
+        var currentQuantity = (existingItem[0].quantity || 0) + defaultQuantity;
+        const updateResponse = await fetch(
+          `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/cart_products?cart_id=eq.${cartobj.id}&product_id=eq.${product.id}`,
+          {
+            method: "PATCH",
+            headers: {
+              apikey: supabaseKey,
+              Authorization: `Bearer ${supabaseKey}`,
+              "Content-Type": "application/json",
+              Prefer: "return=representation",
+            },
+            body: JSON.stringify({
+              quantity: currentQuantity,
+            }),
+          },
+        );
+        const data = await parseJsonSafe(updateResponse);
+        console.log("Updated:", data);
+        await getCartCount(customerId);
+        return data;
+      } else {
+        // if not , insert
+        const response = await fetch(
+          `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/cart_products`,
+          {
+            method: "POST",
+            headers: {
+              apikey: supabaseKey,
+              Authorization: `Bearer ${supabaseKey}`,
+              "Content-Type": "application/json",
+              Prefer: "return=representation",
+            },
+            body: JSON.stringify({
+              cart_id: cartobj.id,
+              product_id: product.id,
+              quantity: defaultQuantity,
+            }),
+          },
+        );
+        const data = await parseJsonSafe(response);
+        console.log("Inserted:", data);
+        await getCartCount(customerId);
+        return data;
       }
     }
   }
