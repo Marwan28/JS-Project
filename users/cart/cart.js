@@ -155,11 +155,10 @@ window.deleteProductFromCart = async function (button) {
 
         if (response.ok) {
           console.log("Delete item is done!");
-
           cart.cart_products = cart.cart_products.filter(
             (item) => item.product.id != productId,
           );
-
+          getCartCount(customerId);
           displayCardProducts();
         } else {
           console.error("Delete failed:", response.status);
@@ -235,7 +234,6 @@ window.decrementQuantity = async function (button) {
           // update ui
           item.quantity = newQuantity;
           displayCardProducts();
-
           return data;
         }
       }
@@ -392,3 +390,63 @@ document
     await checkout(customerId);
     location.href = `../orders/orders.html`;
   });
+
+//get wishlist count&cartcount
+const headers = {
+  apikey: supabaseKey,
+  Authorization: `Bearer ${supabaseKey}`,
+};
+if (customerId) {
+  getCartCount(customerId);
+  getWishlistCount(customerId);
+}
+var wishlistCount = document.getElementById("wishlistCount");
+var cartCount = document.getElementById("cartCount");
+async function getWishlistCount(id) {
+  try {
+    const response = await fetch(
+      `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/wishlist?customer_id=eq.${id}&select=*,wishlist_products(*)`,
+      {
+        method: "GET",
+        headers: headers,
+      },
+    );
+    var wishlist = await response.json();
+    if (wishlist.length === 0) {
+      wishlistCount.innerHTML = 0;
+    } else {
+      wishlistCount.innerHTML = wishlist[0].wishlist_products.length;
+      console.log("wishlist");
+      console.log(wishlist);
+      console.log(wishlist[0].wishlist_products.length);
+    }
+  } catch (error) {
+    console.log(error);
+    wishlistCount.innerHTML = 0;
+  }
+}
+async function getCartCount(id) {
+  try {
+    const response = await fetch(
+      `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/cart?customer_id=eq.${id}&select=*,cart_products(*)`,
+      {
+        method: "GET",
+        headers: headers,
+      },
+    );
+    var cart = await response.json();
+    if (cart.length === 0) {
+      cartCount.innerHTML = 0;
+      console.log("cart is empty");
+    } else {
+      cartCount.innerHTML = cart[0].cart_products.length;
+      console.log("cart");
+      console.log(cart);
+
+      console.log(cart[0].cart_products.length);
+    }
+  } catch (error) {
+    console.log(error);
+    cartCount.innerHTML = 0;
+  }
+}
