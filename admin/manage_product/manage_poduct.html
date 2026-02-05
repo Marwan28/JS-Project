@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="product_page_style.css">
+
+</head>
+<body>
+    
+  <nav class="navbar"><div class="nav">
+            <div class="logo">🛒 ShopHub Admin</div>
+            <ul class="nav-links">
+            <li><a href="home.html">Dashboard</a></li>
+            <li><a href="product\products_page.html">Products</a></li>
+            <li><a href="category\category_page.html">Categories</a></li>
+            <li><a href="#">Orders</a></li>
+            <li><a href="#" >Logout</a></li>
+            </ul></div>
+        </nav>
+
+<section class="products-section">
+    <div class="header-row">
+        <h2 class="title">Manage Products</h2>
+        <button class="add-btn">Add New Product</button>
+    </div>
+
+    <div class="table-container">
+      <table  class="custom-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Sale %</th>
+                <th>Final Price</th>
+                <th>Stock</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="productsTableBody">
+           
+        </tbody>
+    </table></div>
+
+</section>
+
+<!-- popup -->
+<div id="editModal" class="modal">
+  <div class="modal-content">
+
+    <h3>Edit Product</h3>
+
+    <input type="hidden" id="edit-id">
+
+    <label>Name</label>
+    <input type="text" id="edit-name">
+    <small class="error" id="error-name"></small>
+
+    <label>Image URL</label>
+    <input type="text" id="edit-image">
+    <small class="error" id="error-image"></small>
+
+    <label>Price</label>
+    <input type="number" id="edit-price">
+    <small class="error" id="error-price"></small>
+
+    <label>Sale %</label>
+    <input type="number" id="edit-sale">
+    <small class="error" id="error-sale"></small>
+
+    <label>Stock Quantity</label>
+    <input type="number" id="edit-stock">
+    <small class="error" id="error-stock"></small>
+
+    <label>Category</label>
+    <select id="edit-category">
+      <option value="">Select Category</option>
+    </select>
+    <small class="error" id="error-category"></small>
+
+    <label>Description</label>
+    <textarea id="edit-description"></textarea>
+    <small class="error" id="error-description"></small>
+
+    <div class="modal-actions">
+      <button id="saveEdit">Save</button>
+      <button id="closeModal">Cancel</button>
+    </div>
+
+  </div>
+</div>
+
+
+
+<div id="deleteModal" class="modal">
+  <div class="modal-content" style="width: 350px; text-align: center;">
+    <h3>Confirm Delete</h3>
+    <p>Are you sure you want to delete this product?</p>
+    <input type="hidden" id="delete-id">
+    
+    <div class="modal-actions" style="justify-content: center; display: flex;">
+      <button id="confirmDelete" style="background-color: #ff5b5b; color: white;">Yes, Delete</button>
+      <button id="closeDeleteModal" style="background-color: #6c757d; color: white;">Cancel</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div id="addModal" class="modal">
+  <div class="modal-content">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <h3>Add New Product</h3>
+      <span id="closeAddModalX" style="cursor:pointer; font-size:24px;">&times;</span>
+    </div>
+    <hr>
+
+    <label>Product Name *</label>
+    <input type="text" id="add-name" placeholder="Enter product name">
+    <small class="error" id="error-add-name"></small>
+
+    <label>Category *</label>
+    <select id="add-category">
+      </select>
+    <small class="error" id="error-add-category"></small>
+
+    <label>Price *</label>
+    <input type="number" id="add-price" placeholder="0.00">
+    <small class="error" id="error-add-price"></small>
+
+    <label>Sale % (0-100) *</label>
+    <input type="number" id="add-sale" placeholder="0">
+    <small class="error" id="error-add-sale"></small>
+
+    <label>Stock Quantity *</label>
+    <input type="number" id="add-stock" placeholder="0">
+    <small class="error" id="error-add-stock"></small>
+
+    <label>Image URL *</label>
+    <input type="text" id="add-image" placeholder="https://example.com/image.jpg">
+    <small class="error" id="error-add-image"></small>
+
+    <label>Description *</label>
+    <textarea id="add-description" rows="3" placeholder="Enter description"></textarea>
+    <small class="error" id="error-add-description"></small>
+
+    <div class="modal-actions" style="margin-top: 20px;">
+        <button id="closeAddModal" style="background-color: #6c757d; color: white;">Cancel</button>
+        <button id="saveNewProduct" style="background-color: #3b71fe; color: white;">Save Product</button>
+    </div>
+  </div>
+</div>
+
+<script src="products_page_scribt.js"></script>
+</body>
+</html>

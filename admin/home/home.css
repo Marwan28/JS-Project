@@ -1,0 +1,187 @@
+body{
+    margin: 0;
+    padding: 0;
+    background-color:#f9fafc;
+}
+
+.welcomeDiv{
+    margin:30px;
+    background-color: #e5dbfe;
+    border-radius: 20px;
+    width: 100%;
+    height: 200px;
+
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+}
+
+.text{
+    color: #0e0b20;    
+    padding-left: 40px; 
+
+}
+
+img{
+    width: 400px;
+    height:280px;
+        padding-right: 40px; 
+
+}
+
+
+
+.overview-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.title {
+    color: #a0a0a0;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.cards-grid {
+    display: flex;
+    gap: 15px;
+    flex-wrap: nowrap;
+    background-color: transparent;
+}
+
+.card {
+    flex: 1;
+    min-width: 200px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    height: 100px;
+    background: white;
+    padding: 2rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    text-align: center
+
+}
+
+.txt{
+  color: blue;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    font-size: 20px;
+}
+
+.num{
+  display: block;
+      font-size: 3rem;
+    font-weight: 700;
+    color:blue;
+}
+
+ 
+
+.content {
+    margin-top: 100px;
+    margin-left: 20px;
+   width: 90%; 
+            
+  padding: 20px;
+  background-color:#f9fafc;
+}
+.logo {
+  margin-bottom: 30px;
+  font-size: 20px;
+  text-align: center;
+}
+
+.menu {
+  list-style: none;
+}
+
+.menu li {
+  
+  padding: 12px 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+
+
+
+.admin-controls {
+    display: flex;
+    justify-content: center; 
+    gap: 20px;               
+    padding: 40px;
+    background-color: #f8f9fa; 
+    margin-top: 20px;
+}
+
+.admin-btn {
+    background-color: #2563eb; 
+    color: white;             
+    padding: 15px 30px;       
+    border: none;              
+    border-radius: 10px;       
+    font-size: 18px;           
+    font-weight: 600;          
+    cursor: pointer;           
+    transition: background-color 0.3s ease; 
+}
+
+.admin-btn:hover {
+    background-color: #1d4ed8; 
+}
+
+.admin-btn:active {
+    transform: scale(0.98);   
+}
+
+
+.navbar {
+  width: 100%;
+  backdrop-filter: blur(10px);
+  position: fixed;
+  height: 70px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  color:black;
+  padding: 0 20px;  /* position: sticky; */
+  top: 0;
+  margin-bottom: 10px;z-index: 100;
+  
+}
+
+
+.logo {
+  color: blue;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 15px;align-items: center;
+}
+
+.nav-links a {
+  text-decoration: none;
+  font-size: 20px;
+  color: black;
+}
+
+.nav-links a:hover {
+   color: blue;  
+}
+
+.nav{
+  width: 95%;
+  justify-content: space-between;
+  display: flex;
+}
