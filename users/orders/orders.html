@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Orders</title>
     <link rel="stylesheet" href="orders.css" />
     <script>
       const userId = localStorage.getItem("currentUserId");
@@ -16,8 +16,8 @@
     <header>
       <div class="welcome">Welcome To Shop Hub</div>
       <div class="nav_links">
-        <a href="index.html">Home</a>
-        <a href="../products/product_details/product_details.html">Products</a>
+        <a href="../user-home/home.html">Home</a>
+        <a href="../products/filter/products.html">Products</a>
         <a href="../cart/cart.html" id="navCart"
           >Cart(<span id="cartCount">0</span>)</a
         >
@@ -39,7 +39,9 @@
           <option value="rejected">Rejected</option>
         </select>
       </div>
-      <div id="user_orders"><div class="Loading_placeholder">Loading....</div></div>
+      <div id="user_orders">
+        <div class="Loading_placeholder">Loading....</div>
+      </div>
 
       <div id="popupOverlay" class="overlay">
         <div class="popup">
@@ -58,8 +60,20 @@
             <textarea id="ratingComment" placeholder="Feel free ..."></textarea>
           </div>
           <div class="rating_group_buttons">
-            <button class="submit_btn" id="submit_popup_btn" onclick="submitRating()">Submit</button>
-            <button class="cancel_btn" id="close_popup_btn" onclick="closePopup()">Cancel</button>
+            <button
+              class="submit_btn"
+              id="submit_popup_btn"
+              onclick="submitRating()"
+            >
+              Submit
+            </button>
+            <button
+              class="cancel_btn"
+              id="close_popup_btn"
+              onclick="closePopup()"
+            >
+              Cancel
+            </button>
           </div>
         </div>
       </div>
