@@ -85,7 +85,7 @@ function displayProducts(productslist) {
  * get cart id , to push it with product into cart_product table (from product page it 1 item , if need to inc push it from detials)
  * check if user have card or not
  */
-var customerId = "cda4818f-0913-408e-9194-060673fe810f";
+var customerId = "13318068-cf50-4999-9e39-a799c2553ffb";
 async function createCartToCustomer(customerId) {
   //check
   const checkResponse = await fetch(
@@ -245,7 +245,6 @@ async function createWhisListToCustomer(customerId) {
   return newWishlist;
 }
 
-
 window.addToWishlist = async function (event) {
   event.stopPropagation(); // Prevent card click navigation
   var heart = event.target;
@@ -362,8 +361,7 @@ if (ratingDiv) {
     `;
   }
 }
-// filter by rating 
-
+// filter by rating
 
 // filter by category
 var sameCategoryList;
