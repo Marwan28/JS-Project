@@ -14,8 +14,51 @@
 
 body {
   background-color: var(--surface);
-  padding: 24px 36px 60px;
+  margin: 0;
+  padding: 100px 0 60px;
   color: var(--dark);
+}
+/* site header */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 80px;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  justify-content: space-around;
+  display: flex;
+  z-index: 1000;
+}
+
+.site-header .welcome {
+  display: flex;
+  color: rgb(37, 99, 235);
+  font-size: 30px;
+  font-weight: 900;
+}
+
+.nav_links {
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  white-space: nowrap;
+}
+
+.nav_links a {
+  text-decoration: none;
+  color: rgb(37, 99, 235);
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.nav_links a:hover,
+.nav_links a:active {
+  color: blueviolet;
 }
 /* header */
 .page-header {
@@ -23,7 +66,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 16px;
-  padding: 18px 24px;
+  padding: 18px 36px;
   background: var(--white);
   border: 1px solid var(--border);
   border-radius: 16px;
@@ -33,7 +76,10 @@ body {
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 16px;
+  justify-content: space-between;
+  gap: 24px;
+  row-gap: 12px;
+  flex-wrap: wrap;
   width: 100%;
   max-width: 1100px;
 }
@@ -47,32 +93,10 @@ body {
   width: 240px;
 }
 
-@media (max-width: 900px) {
-  .header-actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .header-actions .sort-wrapper {
-    width: 100%;
-  }
-}
-
 .brand {
   display: flex;
   flex-direction: column;
   gap: 6px;
-}
-
-.logo {
-  font-size: 24px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-}
-
-.tagline {
-  font-size: 13px;
-  color: var(--muted);
 }
 
 .header-actions {
@@ -80,21 +104,7 @@ body {
   align-items: center;
   gap: 16px;
 }
-
-/* toolbar */
-.toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 18px;
-  border-radius: 12px;
-  background: var(--white);
-  border: 1px solid var(--border);
-  margin-bottom: 18px;
-}
-
 .stats #count {
-  margin: 0;
   color: var(--muted);
   font-size: 14px;
 }
@@ -136,6 +146,7 @@ body {
   display: flex;
   gap: 20px;
   align-items: flex-start;
+  padding: 0 36px;
 }
 .page .filter {
   width: 260px;
@@ -145,7 +156,7 @@ body {
   border: 1px solid var(--border);
   box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
   position: sticky;
-  top: 24px;
+  top: 120px;
 }
 
 .filter h2 {
@@ -385,4 +396,8 @@ body {
   align-items: center;
   gap: 8px;
   margin-bottom: 8px;
+}
+.none {
+  color: #2563eb;
+  font-weight: bold;
 }

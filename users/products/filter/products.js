@@ -1,6 +1,7 @@
 import { supabaseKey } from "../../../supabase/supabase_client.js";
 
 var products;
+var currentProducts = [];
 // GET PRODUCTS
 export async function supabaseGet(url) {
   const res = await fetch(url, {
@@ -17,7 +18,8 @@ async function getAllProductswithRates() {
     `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/product?select=*,rating(score),category(name)`,
   );
   console.log(products);
-  displayProducts(products);
+  currentProducts = products;
+  displayProducts(currentProducts);
 }
 //make a request
 getAllProductswithRates();
@@ -27,7 +29,7 @@ function displayProducts(productslist) {
   var container = document.getElementById("products");
   container.innerHTML = "";
   var count = document.getElementById("count");
-  count.innerHTML = `showing ${products.length} products`;
+  count.innerHTML = `showing ${productslist.length} products`;
   for (var product of productslist) {
     var price;
     var hasSale =
@@ -68,7 +70,7 @@ function displayProducts(productslist) {
           <i class="fa-regular fa-heart" onclick='addToWishlist(event)' data-id='${product.id}'  style="cursor:pointer;"></i>
           <div class="button" onclick='addToCart(event)' data-id='${product.id}' data-quantity="0">
             <i class="fa-solid fa-cart-shopping"></i>
-            <h4>Add To Cart <span class="quantity-badge" style="display:none;">(0)</span></h4>
+            <h4>Add To Cart</h4>
           </div>
         </div>
       </div>
@@ -85,7 +87,12 @@ function displayProducts(productslist) {
  * get cart id , to push it with product into cart_product table (from product page it 1 item , if need to inc push it from detials)
  * check if user have card or not
  */
-var customerId = "13318068-cf50-4999-9e39-a799c2553ffb";
+var customerId = localStorage.getItem("currentUserId");
+var defaultQuantity = 1;
+const headers = {
+  apikey: supabaseKey,
+  Authorization: `Bearer ${supabaseKey}`,
+};
 async function createCartToCustomer(customerId) {
   //check
   const checkResponse = await fetch(
@@ -123,22 +130,16 @@ async function createCartToCustomer(customerId) {
   return newCart[0];
 }
 
-createCartToCustomer(customerId);
 
+if (customerId) {
+  getCartCount(customerId);
+  getWishlistCount(customerId);
+}
+createCartToCustomer(customerId);
 window.addToCart = async function (event) {
   event.stopPropagation(); // Prevent card click navigation
   var button = event.target.closest(".button");
   var productId = button.dataset.id;
-
-  // Increment quantity counter
-  var currentQuantity = parseInt(button.dataset.quantity) || 0;
-  currentQuantity++;
-  button.dataset.quantity = currentQuantity;
-
-  // Show badge with counter
-  var badge = button.querySelector(".quantity-badge");
-  badge.textContent = `(${currentQuantity})`;
-  badge.style.display = "inline";
 
   // console.log(productId)
   for (var product of products) {
@@ -159,6 +160,7 @@ window.addToCart = async function (event) {
       const existingItem = await checkResponse.json();
       // if found.update only
       if (existingItem && existingItem.length > 0) {
+        var currentQuantity = (existingItem[0].quantity || 0) + defaultQuantity;
         const updateResponse = await fetch(
           `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/cart_products?cart_id=eq.${cartobj.id}&product_id=eq.${product.id}`,
           {
@@ -175,6 +177,7 @@ window.addToCart = async function (event) {
         );
         const data = await updateResponse.json();
         console.log("Updated:", data);
+        await getCartCount(customerId);
         return data;
       } else {
         // if not , insert
@@ -191,12 +194,13 @@ window.addToCart = async function (event) {
             body: JSON.stringify({
               cart_id: cartobj.id,
               product_id: product.id,
-              quantity: currentQuantity,
+              quantity: defaultQuantity,
             }),
           },
         );
         const data = await response.json();
         console.log("Inserted:", data);
+        await getCartCount(customerId);
         return data;
       }
     }
@@ -288,6 +292,7 @@ window.addToWishlist = async function (event) {
         );
         const data = await updateResponse.json();
         console.log("Wishlist Updated:", data);
+
         return data;
       } else {
         const response = await fetch(
@@ -313,6 +318,57 @@ window.addToWishlist = async function (event) {
     }
   }
 };
+//get wishlist count&cartcount
+var wishlistCount = document.getElementById("wishlistCount");
+var cartCount = document.getElementById("cartCount");
+async function getWishlistCount(id) {
+  try {
+    const response = await fetch(
+      `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/wishlist?customer_id=eq.${id}&select=*,wishlist_products(*)`,
+      {
+        method: "GET",
+        headers: headers,
+      },
+    );
+    var wishlist = await response.json();
+    if (wishlist.length === 0) {
+      wishlistCount.innerHTML = 0;
+    } else {
+      wishlistCount.innerHTML = wishlist[0].wishlist_products.length;
+      console.log("wishlist");
+      console.log(wishlist);
+      console.log(wishlist[0].wishlist_products.length);
+    }
+  } catch (error) {
+    console.log(error);
+    wishlistCount.innerHTML = 0;
+  }
+}
+async function getCartCount(id) {
+  try {
+    const response = await fetch(
+      `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/cart?customer_id=eq.${id}&select=*,cart_products(*)`,
+      {
+        method: "GET",
+        headers: headers,
+      },
+    );
+    var cart = await response.json();
+    if (cart.length === 0) {
+      cartCount.innerHTML = 0;
+      console.log("cart is empty");
+    } else {
+      cartCount.innerHTML = cart[0].cart_products.length;
+      console.log("cart");
+      console.log(cart);
+
+      console.log(cart[0].cart_products.length);
+    }
+  } catch (error) {
+    console.log(error);
+    cartCount.innerHTML = 0;
+  }
+}
 
 // average rate
 function averageRate(scores) {
@@ -346,11 +402,17 @@ function productAverageRate(ratings) {
 // rating filter UI
 var ratingDiv = document.getElementById("filterrating");
 if (ratingDiv) {
+  ratingDiv.innerHTML += `
+    <div class='starDiv'>
+      <input type="radio" id="rateNone" name="rating" data-rate="0"  />
+      <label for="rateNone" class='none'>None</label>
+    </div>
+  `;
   for (var i = 5; i >= 1; i--) {
     var uncoloredStar = 5 - i;
     ratingDiv.innerHTML += `
       <div class='starDiv'>
-        <input type="checkbox" id="rate${i}" data-rate="${i}" />
+        <input type="radio" id="rate${i}" name="rating" data-rate="${i}" />
         <label for="rate${i}">
           <div style="display: flex; gap: 2px;">
             ${'<i class="fa-solid fa-star coloredstar"></i>'.repeat(i)}
@@ -362,7 +424,46 @@ if (ratingDiv) {
   }
 }
 // filter by rating
+var sameratingList;
+var radioRatingButtons = document.querySelectorAll(
+  '.starDiv input[type="radio"]',
+);
 
+for (var radio of radioRatingButtons) {
+  radio.addEventListener("change", filterByRating);
+}
+
+function filterByRating() {
+  sameratingList = [];
+
+  var selectedRating = document.querySelector(
+    '.starDiv input[type="radio"]:checked',
+  );
+
+  // If no selection, show all products
+  if (!selectedRating) {
+    currentProducts = products;
+    displayProducts(currentProducts);
+  } else {
+    var selectedRate = parseInt(selectedRating.dataset.rate, 10);
+    if (selectedRate === 0) {
+      currentProducts = products;
+      displayProducts(currentProducts);
+    } else {
+      findProductsByRating(selectedRate);
+      currentProducts = sameratingList;
+      displayProducts(currentProducts);
+    }
+  }
+}
+function findProductsByRating(rate) {
+  for (var product of products) {
+    var avgRate = averageRate(product.rating || []);
+    if (Math.round(avgRate) === rate) {
+      sameratingList.push(product);
+    }
+  }
+}
 // filter by category
 var sameCategoryList;
 var radioButtons = document.querySelectorAll(
@@ -382,10 +483,12 @@ function filterCategories() {
 
   // If "all" is selected or no selection, show all products
   if (!selectedCategory || selectedCategory.id === "all") {
-    displayProducts(products);
+    currentProducts = products;
+    displayProducts(currentProducts);
   } else {
     findproductByCategoryName(selectedCategory.id);
-    displayProducts(sameCategoryList);
+    currentProducts = sameCategoryList;
+    displayProducts(currentProducts);
   }
 }
 function findproductByCategoryName(categoryName) {
@@ -406,7 +509,8 @@ function findProductByName(str) {
       searchItems.push(ele);
     }
   }
-  displayProducts(searchItems);
+  currentProducts = searchItems;
+  displayProducts(currentProducts);
 }
 
 document.getElementById("search").addEventListener("input", function () {
@@ -421,31 +525,31 @@ document.getElementById("search").addEventListener("input", function () {
 // sort
 var sortedArray = [];
 function sortDescByPrice() {
-  sortedArray = [...products].sort(function (a, b) {
+  sortedArray = [...currentProducts].sort(function (a, b) {
     return b.price - a.price;
   });
   displayProducts(sortedArray);
 }
 function sortASCByPrice() {
-  sortedArray = [...products].sort(function (a, b) {
+  sortedArray = [...currentProducts].sort(function (a, b) {
     return a.price - b.price;
   });
   displayProducts(sortedArray);
 }
 function sortByNew() {
-  sortedArray = [...products].sort(function (a, b) {
+  sortedArray = [...currentProducts].sort(function (a, b) {
     return new Date(b.created_at) - new Date(a.created_at);
   });
   displayProducts(sortedArray);
 }
 function sortByNameDesc() {
-  sortedArray = [...products].sort(function (a, b) {
+  sortedArray = [...currentProducts].sort(function (a, b) {
     return b.name.localeCompare(a.name);
   });
   displayProducts(sortedArray);
 }
 function sortByNameAsc() {
-  sortedArray = [...products].sort(function (a, b) {
+  sortedArray = [...currentProducts].sort(function (a, b) {
     return a.name.localeCompare(b.name);
   });
   displayProducts(sortedArray);
@@ -464,7 +568,6 @@ document.getElementById("sortby").addEventListener("change", function () {
     sortByNameDesc();
   }
 });
-// filter
 
 // go to product details
 
