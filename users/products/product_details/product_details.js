@@ -32,6 +32,8 @@ function displayDetails(product) {
   } else {
     price = product.price;
   }
+  var isOutOfStock =
+    product.stock_quantity == null || Number(product.stock_quantity) <= 0;
 
   var productDetials = `<!-- image -->
       <div class="img">
@@ -73,7 +75,9 @@ function displayDetails(product) {
         <!-- stock -->
         <div class="stock">
           <i class="fa-solid fa-check"></i>
-          <p>In Stock (${product.stock_quantity} available)</p>
+          <p>
+            ${isOutOfStock ? "Out of Stock" : `In Stock (${product.stock_quantity} available)`}
+          </p>
         </div>
         <!-- description -->
         <div class="description">
@@ -94,9 +98,13 @@ function displayDetails(product) {
         <!-- cart fav -->
         <div class="cartFav">
           <i class="fa-regular fa-heart" onclick="addToWishlist(event)" data-id="${product.id}" style="cursor: pointer;"></i>
-          <div class="button" onclick="addToCart(event)" data-id="${product.id}" data-quantity="0">
+          <div class="button"
+               onclick="${isOutOfStock ? "" : "addToCart(event)"}"
+               data-id="${product.id}"
+               data-quantity="0"
+               style="${isOutOfStock ? "pointer-events:none; opacity:0.5;" : ""}">
             <i class="fa-solid fa-cart-shopping"></i>
-            <h4>Add To Cart</h4>
+            <h4>${isOutOfStock ? "Out of Stock" : "Add To Cart"}</h4>
           </div>
         </div>
         <hr class="line" />
@@ -119,6 +127,29 @@ function displayDetails(product) {
 
   document.querySelector(".productdetails").innerHTML = productDetials;
   loadInitialCartQuantity();
+  initQuantityControls();
+}
+
+function initQuantityControls() {
+  var minusBtn = document.querySelector(".minus-btn");
+  var plusBtn = document.querySelector(".plus-btn");
+  var quantityInput = document.querySelector(".quantity-input");
+
+  if (!minusBtn || !plusBtn || !quantityInput) {
+    return;
+  }
+
+  minusBtn.addEventListener("click", function () {
+    var current = parseInt(quantityInput.textContent, 10) || 1;
+    if (current > 1) {
+      quantityInput.textContent = current - 1;
+    }
+  });
+
+  plusBtn.addEventListener("click", function () {
+    var current = parseInt(quantityInput.textContent, 10) || 1;
+    quantityInput.textContent = current + 1;
+  });
 }
 
 async function loadInitialCartQuantity() {
@@ -311,18 +342,14 @@ window.addToCart = async function (event) {
     );
     const existingItem = await checkResponse.json();
 
-    // Get quantity from database or start with 1
-    let currentQuantity = 1;
-    if (existingItem && existingItem.length > 0) {
-      currentQuantity = existingItem[0].quantity || 1;
-    }
-
-    // Increment quantity
-    currentQuantity++;
-
-    // Update quantity in the tag
     var quantityInput = document.querySelector(".quantity-input");
-    quantityInput.textContent = currentQuantity;
+    var selectedQuantity = parseInt(
+      quantityInput ? quantityInput.textContent : "1",
+      10,
+    );
+    if (!selectedQuantity || selectedQuantity < 1) {
+      selectedQuantity = 1;
+    }
 
     // if found.update only
     if (existingItem && existingItem.length > 0) {
@@ -336,7 +363,7 @@ window.addToCart = async function (event) {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            quantity: currentQuantity,
+            quantity: selectedQuantity,
           }),
         },
       );
@@ -369,7 +396,7 @@ window.addToCart = async function (event) {
           body: JSON.stringify({
             cart_id: cartobj.id,
             product_id: product.id,
-            quantity: currentQuantity,
+            quantity: selectedQuantity,
           }),
         },
       );
