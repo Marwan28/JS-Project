@@ -2,7 +2,7 @@ import { supabaseKey } from "../../../supabase/supabase_client.js";
 var cartProducts;
 async function getCartData(customerId) {
   const response = await fetch(
-    `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/cart?customer_id=eq.${customerId}&select=cart_products(cart_id,quantity,product(id,name,price,image,description,sale_prectenage))`,
+    `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/cart?customer_id=eq.${customerId}&select=cart_products(cart_id,quantity,product(id,name,price,image,description,sale_prectenage,stock_quantity))`,
     {
       headers: {
         apikey: supabaseKey,
@@ -179,6 +179,13 @@ window.incrementQuantity = async function (button) {
     for (var item of cart.cart_products) {
       if (item.product.id == productId) {
         var newQuantity = item.quantity + 1;
+        var stockLimit = Number(item.product.stock_quantity);
+        if (Number.isFinite(stockLimit) && stockLimit >= 0) {
+          if (newQuantity > stockLimit) {
+            alert(`Only ${stockLimit} left in stock.`);
+            return null;
+          }
+        }
         const response = await fetch(
           `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/cart_products?product_id=eq.${productId}`,
           {
