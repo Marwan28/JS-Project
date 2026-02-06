@@ -350,6 +350,12 @@ window.addToCart = async function (event) {
     if (!selectedQuantity || selectedQuantity < 1) {
       selectedQuantity = 1;
     }
+    var stockLimit = Number(product.stock_quantity);
+    if (Number.isFinite(stockLimit) && stockLimit >= 0) {
+      if (selectedQuantity > stockLimit) {
+        alert(`Only ${stockLimit} left in stock.`);
+      }
+    }
 
     // if found.update only
     if (existingItem && existingItem.length > 0) {

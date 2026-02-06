@@ -35,6 +35,8 @@ function displayWishListProducts() {
       } else {
         price = product.price;
       }
+      var isOutOfStock =
+        product.stock_quantity == null || Number(product.stock_quantity) <= 0;
       var wishlistProduct = `
       <div class="card" id='${product.id}'>
         <div class="img">
@@ -62,8 +64,12 @@ function displayWishListProducts() {
         </div>
         <div class="cartFav">
           <i class="fa-solid fa-heart" data-product-id=${product.id} onclick='removeProductFromWishlist(this)'></i>
-        <div class="button" onclick='addToCart(event)' data-id='${product.id}' data-quantity="0">
-          <h4>Add To Cart</h4>
+        <div class="button"
+             onclick='${isOutOfStock ? "" : "addToCart(event)"}'
+             data-id='${product.id}'
+             data-quantity="0"
+             style="${isOutOfStock ? "pointer-events:none; opacity:0.5;" : ""}">
+          <h4>${isOutOfStock ? "Out of Stock" : "Add To Cart"}</h4>
         </div>
         
       </div>
@@ -271,6 +277,12 @@ window.addToCart = async function (event) {
       // if found.update only
       if (existingItem && existingItem.length > 0) {
         var currentQuantity = (existingItem[0].quantity || 0) + defaultQuantity;
+        var stockLimit = Number(product.stock_quantity);
+        if (Number.isFinite(stockLimit) && stockLimit >= 0) {
+          if (currentQuantity > stockLimit) {
+            alert(`Only ${stockLimit} left in stock.`);
+          }
+        }
         const updateResponse = await fetch(
           `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/cart_products?cart_id=eq.${cartobj.id}&product_id=eq.${product.id}`,
           {
@@ -292,6 +304,12 @@ window.addToCart = async function (event) {
         return data;
       } else {
         // if not , insert
+        var stockLimit = Number(product.stock_quantity);
+        if (Number.isFinite(stockLimit) && stockLimit >= 0) {
+          if (defaultQuantity > stockLimit) {
+            alert(`Only ${stockLimit} left in stock.`);
+          }
+        }
         const response = await fetch(
           `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/cart_products`,
           {
