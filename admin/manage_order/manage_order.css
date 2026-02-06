@@ -202,3 +202,7 @@ main {
   border-radius: 0.5rem;
   font-size: 1rem;
 }
+.Loading_placeholder {
+  font-size: 18px;
+  font-weight: bold;
+}

@@ -4,17 +4,28 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Orders</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="orders.css" />
     <script>
       const userId = localStorage.getItem("currentUserId");
+      const userRole = localStorage.getItem("currentUserRole");
       if (!userId) {
         window.location.replace("../../login/login.html");
+      }else{
+        if(userRole==='Admin'){
+          window.location.replace("../../index.html");
+        }
       }
     </script>
   </head>
   <body>
     <header>
-      <div class="welcome">Welcome To Shop Hub</div>
+      <div class="welcome">Shop Hub</div>
       <div class="nav_links">
         <a href="../user-home/home.html">Home</a>
         <a href="../products/filter/products.html">Products</a>
@@ -25,7 +36,7 @@
           >Wishlist(<span id="wishlistCount">0</span>)</a
         >
         <a href="#" id="orders_link">My Orders</a>
-        <a href="#" id="log_out_link">Log out</a>
+        <a href="#" id="logout">Log out</a>
       </div>
     </header>
     <main>

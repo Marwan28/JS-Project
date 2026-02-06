@@ -9,21 +9,36 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      const userId = localStorage.getItem("currentUserId");
+      const userRole = localStorage.getItem("currentUserRole");
+      if (!userId) {
+        window.location.replace("../../login/login.html");
+      } else {
+        if (userRole === "Admin") {
+          window.location.replace("../../index.html");
+        }
+      }
+    </script>
   </head>
   <body>
     <header class="site-header">
-      <div class="welcome">Welcome To Shop Hub</div>
+      <div class="welcome">Shop Hub</div>
       <div class="nav_links">
-        <a href="../../../index.html">Home</a>
+        <a href="../home/home.html">Home</a>
         <a href="../products/filter/products.html">Products</a>
-        <a href="../cart/cart.html" id="navCart"
-          >Cart(<span id="cartCount">0</span>)</a
-        >
-        <a href="../wishlist/wishlist.html" id="navWishlist"
+        <a href="../cart/cart.html">Cart(<span id="cartCount">0</span>)</a>
+        <a href="../wishlist/wishlist.html"
           >Wishlist(<span id="wishlistCount">0</span>)</a
         >
-        <a href="../orders/orders.html" id="orders_link">My Orders</a>
-        <a href="#" id="log_out_link">Log out</a>
+        <a href="../orders/orders.html">My Orders</a>
+        <a href="#" id="logout">Log out</a>
       </div>
     </header>
     <header class="page-header" aria-labelledby="header">

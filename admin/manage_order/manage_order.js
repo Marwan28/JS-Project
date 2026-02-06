@@ -1,3 +1,5 @@
+import { logout } from "../../logout.js";
+document.getElementById("logout").addEventListener("click", logout);
 const headers = {
   apikey: "sb_publishable_vs3dcyNAq9MoeQH77xkVuA_fGdHPIq6",
   Authorization: "Bearer sb_publishable_vs3dcyNAq9MoeQH77xkVuA_fGdHPIq6",

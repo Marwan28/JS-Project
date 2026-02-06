@@ -1,34 +1,32 @@
+import { logout } from "../../logout.js";
+document.getElementById("logout").addEventListener("click", logout);
+// categories data
+const supabaseUrl = "https://ujichqxxfsbgdjorkolz.supabase.co";
+const supabaseKey = "sb_publishable_vs3dcyNAq9MoeQH77xkVuA_fGdHPIq6";
+var xhr = new XMLHttpRequest();
+xhr.open("GET", supabaseUrl + "/rest/v1/category", true);
 
+xhr.setRequestHeader("apikey", supabaseKey);
+xhr.setRequestHeader("Authorization", "Bearer " + supabaseKey);
+xhr.setRequestHeader("Content-Type", "application/json");
 
- // categories data
-    const supabaseUrl = 'https://ujichqxxfsbgdjorkolz.supabase.co';
-    const supabaseKey = 'sb_publishable_vs3dcyNAq9MoeQH77xkVuA_fGdHPIq6';
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET",supabaseUrl + "/rest/v1/category",true );
+var categoriesData;
 
-    xhr.setRequestHeader("apikey", supabaseKey);
-    xhr.setRequestHeader("Authorization", "Bearer " + supabaseKey);
-    xhr.setRequestHeader("Content-Type", "application/json");
+xhr.onreadystatechange = function () {
+  if (xhr.readyState === 4) {
+    if (xhr.status === 200) {
+      categoriesData = JSON.parse(xhr.responseText);
+      console.log(categoriesData);
 
-    var categoriesData;
-
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-          categoriesData=JSON.parse(xhr.responseText);
-          console.log(categoriesData);
-
-          document.getElementById("yello").innerHTML=categoriesData.length;
-
-
-        } else {
-          console.log("Error:", xhr.responseText);
-        }
-      }
-    };
-    xhr.send();
+      document.getElementById("yello").innerHTML = categoriesData.length;
+    } else {
+      console.log("Error:", xhr.responseText);
+    }
+  }
+};
+xhr.send();
 //products Data
-    var xhrProducts = new XMLHttpRequest();
+var xhrProducts = new XMLHttpRequest();
 
 xhrProducts.open("GET", supabaseUrl + "/rest/v1/product?select=*", true);
 
@@ -42,7 +40,6 @@ var productLength;
 xhrProducts.onreadystatechange = function () {
   if (xhrProducts.readyState === 4) {
     if (xhrProducts.status === 200) {
-
       productData = JSON.parse(xhrProducts.responseText);
       console.log(productData);
 
@@ -52,9 +49,6 @@ xhrProducts.onreadystatechange = function () {
 
       var tableBody = document.getElementById("productsTableBody");
       tableBody.innerHTML = "";
-
-      
-
     } else {
       console.log("Error:", xhrProducts.responseText);
     }
@@ -63,46 +57,37 @@ xhrProducts.onreadystatechange = function () {
 
 xhrProducts.send();
 
+//ORDERS Data
+var xhrOrders = new XMLHttpRequest();
 
+xhrOrders.open("GET", supabaseUrl + "/rest/v1/orders", true);
 
-         //ORDERS Data
-    var xhrOrders = new XMLHttpRequest();
+xhrOrders.setRequestHeader("apikey", supabaseKey);
+xhrOrders.setRequestHeader("Authorization", "Bearer " + supabaseKey);
+xhrOrders.setRequestHeader("Content-Type", "application/json");
 
-   xhrOrders.open("GET",supabaseUrl + "/rest/v1/orders",true );
-
-     xhrOrders.setRequestHeader("apikey", supabaseKey);
-     xhrOrders.setRequestHeader("Authorization", "Bearer " + supabaseKey);
-     xhrOrders.setRequestHeader("Content-Type", "application/json");
-
-    var orderstData,ordersLength, pendingOrdersCount=0;
-    xhrOrders.onreadystatechange = function () {
-
-      if ( xhrOrders.readyState === 4) {
-        if ( xhrOrders.status === 200) {
-
-          orderstData = JSON.parse( xhrOrders.responseText);           
-          ordersLength = orderstData.length ;
-          for (var order of orderstData) {
-            if(order.status == "pending")
-             pendingOrdersCount++;
-          }
-
-          console.log(" orderstData "+orderstData);
-          console.log(ordersLength);
-          console.log("pending Orders Count"+pendingOrdersCount);
-        
-          document.querySelector("#totalOrders").innerHTML= ordersLength;
-          document.querySelector("#totalPendingOrders").innerHTML=  pendingOrdersCount;
-
-        
-        } else {
-          console.log("Error:",  xhrOrders.responseText);
-        }
+var orderstData,
+  ordersLength,
+  pendingOrdersCount = 0;
+xhrOrders.onreadystatechange = function () {
+  if (xhrOrders.readyState === 4) {
+    if (xhrOrders.status === 200) {
+      orderstData = JSON.parse(xhrOrders.responseText);
+      ordersLength = orderstData.length;
+      for (var order of orderstData) {
+        if (order.status == "pending") pendingOrdersCount++;
       }
-    };
-     xhrOrders.send();
 
+      console.log(" orderstData " + orderstData);
+      console.log(ordersLength);
+      console.log("pending Orders Count" + pendingOrdersCount);
 
-
-         
-
+      document.querySelector("#totalOrders").innerHTML = ordersLength;
+      document.querySelector("#totalPendingOrders").innerHTML =
+        pendingOrdersCount;
+    } else {
+      console.log("Error:", xhrOrders.responseText);
+    }
+  }
+};
+xhrOrders.send();

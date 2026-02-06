@@ -1,14 +1,25 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Manage Orders</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="manage_order.css" />
     <script>
       const userId = localStorage.getItem("currentUserId");
+      const userRole = localStorage.getItem("currentUserRole");
       if (!userId) {
         window.location.replace("../../login/login.html");
+      }else{
+        if(userRole==='Customer'){
+          window.location.replace("../../index.html");
+        }
       }
     </script>
   </head>
@@ -19,8 +30,8 @@
         <a href="../home/home.html">Home</a>
         <a href="../manage_product/manage_product.html">Products</a>
         <a href="../manage_category/manage_category.html">Categories</a>
-        <a href="#" id="orders_link">Orders</a>
-        <a href="#" id="log_out_link">Log out</a>
+        <a href="../manage_order/manage_order.html" id="orders_link">Orders</a>
+        <a href="#" id="logout">Log out</a>
       </div>
     </header>
     <main>
@@ -36,7 +47,7 @@
           </select>
         </div>
       <!-- </div> -->
-      <div id="orders"></div>
+      <div id="orders"><div class="Loading_placeholder">Loading....</div></div>
     </main>
     <script type="module" src="manage_order.js"></script>
   </body>

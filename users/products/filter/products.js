@@ -1,3 +1,5 @@
+import { logout } from "../../../logout.js";
+document.getElementById("logout").addEventListener("click", logout);
 import { supabaseKey } from "../../../supabase/supabase_client.js";
 
 var products;
@@ -482,7 +484,51 @@ function findProductsByRating(rate) {
     }
   }
 }
+
+// render the category
+var categoryList = [];
+
+async function renderCategory() {
+  const response = await fetch(
+    "https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/category",
+    {
+      method: "GET",
+      headers: headers,
+    },
+  );
+  categoryList = await response.json();
+  drawCategoryFilter();
+  ListenerCategoryFilters();
+}
+
+function drawCategoryFilter() {
+  var container = document.querySelector(".filter-category");
+  if (!container) return;
+  container.innerHTML = "";
+  container.innerHTML += `<input type="radio" name="category" id="all" />
+    <label for="all">All</label><br />`;
+  for (var cat of categoryList) {
+    var ele = `<input type="radio" name="category" id="${cat.name}" />
+      <label for="${cat.name}">${cat.name}</label><br />`;
+    container.innerHTML += ele;
+  }
+}
+
+
+
+renderCategory();
+
+
+
 // filter by category
+function ListenerCategoryFilters() {
+  var radioButtons = document.querySelectorAll(
+    '.filter-category input[type="radio"]',
+  );
+  for (var radio of radioButtons) {
+    radio.addEventListener("change", filterCategories);
+  }
+}
 var sameCategoryList;
 var radioButtons = document.querySelectorAll(
   '.filter-category input[type="radio"]',

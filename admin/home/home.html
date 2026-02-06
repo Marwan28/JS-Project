@@ -1,77 +1,94 @@
-
-
+<!doctype html>
 <html>
-    <head>
-        <link rel="stylesheet" href="dashbboard_style.css">
-    </head>
-    <body>
-      
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Home</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="home.css" />
+    <script>
+      const userId = localStorage.getItem("currentUserId");
+      const userRole = localStorage.getItem("currentUserRole");
+      if (!userId) {
+        window.location.replace("../../login/login.html");
+      } else {
+        if (userRole === "Customer") {
+          window.location.replace("../../index.html");
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <nav class="navbar">
+      <!-- <div class="nav"> -->
+      <div class="logo">Admin Dashboard</div>
+      <div class="nav-links">
+        <a href="../home/home.html">Home</a>
+        <a href="../manage_product/manage_product.html">Products</a>
+        <a href="../manage_category/manage_category.html">Categories</a>
+        <a href="../manage_order/manage_order.html">Orders</a>
+        <a href="#" id="logout">Log out</a>
+      </div>
+      <!-- </div> -->
+    </nav>
 
-
-        <nav class="navbar"><div class="nav">
-            <div class="logo">🛒 ShopHub Admin</div>
-            <ul class="nav-links">
-            <li><a href="#">Dashboard</a></li>
-            <li><a href="product\products_page.html">Products</a></li>
-            <li><a href="category\category_page.html">Categories</a></li>
-            <li><a href="#">Orders</a></li>
-            <li><a href="#" >Logout</a></li>
-            </ul></div>
-        </nav>
-        
-        <section class="content">
-       <div class="welcomeDiv">
-           <div class="text">
-                <h1 >Hi,Aalaa</h1>
-                <h2 >Ready to manage everything today</h2>
-           </div>
-           <img src="imgs/a weman set.png">
-       </div>
-
-       <section class="overview-container">
-    <h3 class="title">Overview</h3>
-    <div class="cards-grid">
-        <div class="card card-yellow">
-            <div class="info">
-                <span class="txt">Total Categories</span>
-                <span id="yello" class="num"> </span>
-            </div>
+    <section class="content">
+      <div class="welcomeDiv">
+        <div class="text">
+          <h1>Hi, Admin</h1>
+          <h2>Ready to manage everything today</h2>
         </div>
-        <div class="card card-purple">
+        <img src="imgs/a weman set.png" />
+      </div>
+
+      <section class="overview-container">
+        <h3 class="title">Overview</h3>
+        <div class="cards-grid">
+          <div class="card card-yellow">
+            <div class="info">
+              <span class="txt">Total Categories</span>
+              <span id="yello" class="num"> </span>
+            </div>
+          </div>
+          <div class="card card-purple">
             <div class="info">
               <span class="txt">Total Products</span>
-                <span id="totalProducts" class="num"> </span>
+              <span id="totalProducts" class="num"> </span>
             </div>
-        </div>
-        <div class="card card-pink">
+          </div>
+          <div class="card card-pink">
             <div class="info">
-                <span class="txt">Pending Orders</span>
-                <span id="totalPendingOrders" class="num"> </span>
-                
+              <span class="txt">Pending Orders</span>
+              <span id="totalPendingOrders" class="num"> </span>
             </div>
-        </div>
-        <div class="card card-lavender">
+          </div>
+          <div class="card card-lavender">
             <div class="info">
-                <span class="txt">Total Orders</span>
-                <span id="totalOrders" class="num"></span>
-                
+              <span class="txt">Total Orders</span>
+              <span id="totalOrders" class="num"></span>
             </div>
+          </div>
         </div>
-    </div>
 
+        <div class="admin-controls">
+          <a href="../manage_product/manage_product.html">
+            <button class="admin-btn">Manage Products</button></a
+          >
+          <a href="../manage_category/manage_category.html"
+            ><button class="admin-btn">Manage Categories</button></a
+          >
+          <a href="../manage_order/manage_order.html"
+            ><button class="admin-btn">Manage Orders</button></a
+          >
+        </div>
+      </section>
+    </section>
 
-
-    <div class="admin-controls">
-   <a href="product\products_page.html"> <button class="admin-btn">Manage Products</button></a>
-    <a href="category/category_page.html"><button class="admin-btn">Manage Categories</button></a>
-    <a href="#"><button class="admin-btn">Manage Orders</button></a>
-    </div>
-      
-</section>
-       </section>
-        
-       
-      
-   <script src="dashboard_scribt.js"></script>
-    </body>
+    <script type="module" src="home.js"></script>
+  </body>
 </html>

@@ -1,3 +1,5 @@
+import { logout } from "../../logout.js";
+document.getElementById("logout").addEventListener("click", logout);
 import { supabaseKey } from "../../../supabase/supabase_client.js";
 var cartProducts;
 async function getCartData(customerId) {

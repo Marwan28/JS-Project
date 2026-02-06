@@ -1,98 +1,134 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-   <link rel="stylesheet" href="home_style.css">
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-  
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-<nav class="navbar">
-    <div class="logo">MySite</div>
-    <ul class="nav-links">
-      <li><a href="#">Home</a></li>
-      <li><a href="#">Products</a></li>
-      <li><a href="#">Cart(0)</a></li>
-      <li><a href="#">Wishlist()</a></li>
-      <li><a href="#">Login</a></li>
-    </ul>
-</nav>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="home.css" />
+    <script>
+      const userId = localStorage.getItem("currentUserId");
+      const userRole = localStorage.getItem("currentUserRole");
+      if (!userId) {
+        window.location.replace("../../login/login.html");
+      } else {
+        if (userRole === "Admin") {
+          window.location.replace("../../index.html");
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <nav class="navbar">
+      <!-- <div class="nav"> -->
+      <div class="logo">Shop Hub</div>
+      <div class="nav-links">
+        <a href="../home/home.html">Home</a>
+        <a href="../products/filter/products.html">Products</a>
+        <a href="../cart/cart.html">Cart(<span id="cartCount">0</span>)</a>
+        <a href="../wishlist/wishlist.html"
+          >Wishlist(<span id="wishlistCount">0</span>)</a
+        >
+        <a href="../orders/orders.html">My Orders</a>
+        <a href="#" id="logout">Log out</a>
+      </div>
+      <!-- </div> -->
+    </nav>
+    <!-- <nav class="navbar">
+      <div class="logo">MySite</div>
+      <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Products</a></li>
+        <li><a href="#">Cart(0)</a></li>
+        <li><a href="#">Wishlist()</a></li>
+        <li><a href="#">Login</a></li>
+      </ul>
+    </nav> -->
 
-<section class="hero">
-    <div id="BG-img"> 
+    <section class="hero">
+      <div id="BG-img">
         <div id="BG-text">
-            <h1></h1><br>
-            <p></p><br>
-        </div> 
-    </div>
-</section>
-
-<section id="categories" class="section">
-    
-    <div class="categoryContainer">
-        <h2 class="section-title">Categories</h2>
-        <div id="categoriesGrid" class="categories-grid">
-
+          <h1></h1>
+          <br />
+          <p></p>
+          <br />
         </div>
-    </div>
-    </div>
-</section >
-<section id="featuredProducts">
+      </div>
+    </section>
 
-</section>
-<footer class="main-footer">
-    <div class="footer-top">
+    <section id="categories" class="section">
+      <div class="categoryContainer">
+        <h2 class="section-title categories">Categories</h2>
+        <div id="categoriesGrid" class="categories-grid"></div>
+      </div>
+    </section>
+    <section id="featuredProducts"></section>
+    <footer class="main-footer">
+      <div class="footer-top">
         <div class="footer-col">
-            <h3>Briefly about us</h3>
-            <p>our one-stop shop for modern electronics. We bring you quality products, great deals, and fast, reliable servic</p>
-            <br><p>We offer the latest electronics with trusted quality, fair prices, and a smooth shopping experience. Your go-to place for smart tech.</p>
-        </div>
-
-        <div class="footer-col">
-            <h3>Categories</h3>
-            <ul class="recent-posts">
-                <li>
-                    <a href="#">Headphones</a>
-                </li>
-                <li>
-                    <a href="#">Electronics</a>
-                </li>
-                <li>
-                    <a href="#">Laptobs</a>
-                </li>
-                <li>
-                    <a href="#">Mobile Phones</a>
-                </li>
-
-            </ul>
+          <h3>Briefly about us</h3>
+          <p>
+            our one-stop shop for modern electronics. We bring you quality
+            products, great deals, and fast, reliable servic
+          </p>
+          <br />
+          <p>
+            We offer the latest electronics with trusted quality, fair prices,
+            and a smooth shopping experience. Your go-to place for smart tech.
+          </p>
         </div>
 
         <div class="footer-col">
-            <h3>Contact Details</h3>
-            <ul class="contact-info">
-                <li><i class="fa-solid fa-location-dot"></i> Manchester Road 123-78B, Silictown</li>
-                <li><i class="fa-solid fa-phone"></i> +46 123 456 789</li>
-                <li><i class="fa-solid fa-envelope"></i> hello@sitename.com</li>
-                <li><i class="fa-solid fa-globe"></i> http://www.sitename.com</li>
-            </ul>
+          <h3>Categories</h3>
+          <ul class="recent-posts">
+            <li>
+              <a href="#">Headphones</a>
+            </li>
+            <li>
+              <a href="#">Electronics</a>
+            </li>
+            <li>
+              <a href="#">Laptobs</a>
+            </li>
+            <li>
+              <a href="#">Mobile Phones</a>
+            </li>
+          </ul>
         </div>
-    </div>
 
-    <div class="footer-bottom">
+        <div class="footer-col">
+          <h3>Contact Details</h3>
+          <ul class="contact-info">
+            <li>
+              <i class="fa-solid fa-location-dot"></i> Manchester Road 123-78B,
+              Silictown
+            </li>
+            <li><i class="fa-solid fa-phone"></i> +46 123 456 789</li>
+            <li><i class="fa-solid fa-envelope"></i> hello@sitename.com</li>
+            <li><i class="fa-solid fa-globe"></i> http://www.sitename.com</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
         <p>© Copyright 2026. All rights reserved.</p>
         <div class="social-icons">
-            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-            <a href="#"><i class="fa-brands fa-google"></i></a>
-            <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
-            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+          <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#"><i class="fa-brands fa-google"></i></a>
+          <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="#"><i class="fa-brands fa-twitter"></i></a>
         </div>
-    </div>
-</footer>
-<script src="https://unpkg.com/@supabase/supabase-js@2"> </script>
+      </div>
+    </footer>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 
-<script src="home_scribt.js"></script>
-</body>
+    <script type="module" src="home.js"></script>
+  </body>
 </html>
-
-
