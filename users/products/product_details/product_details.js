@@ -1,6 +1,7 @@
 import { supabaseKey } from "../../../supabase/supabase_client.js";
 var product;
 var reviews = [];
+var customerId = localStorage.getItem("currentUserId");
 function findproductByID() {
   var queryString = location.search.split("?")[1];
   var productId = queryString.split("=")[1];
@@ -117,8 +118,6 @@ function displayDetails(product) {
       </div>`;
 
   document.querySelector(".productdetails").innerHTML = productDetials;
-
-  // Load initial quantity from database
   loadInitialCartQuantity();
 }
 
@@ -251,7 +250,6 @@ async function getProductReviews() {
   }
 }
 
-var customerId = localStorage.getItem("currentUserId");
 async function createCartToCustomer(customerId) {
   //check
   const checkResponse = await fetch(
@@ -348,9 +346,11 @@ window.addToCart = async function (event) {
         if (contentType && contentType.includes("application/json")) {
           const data = await updateResponse.json();
           console.log("Updated:", data);
+          await getCartCount(customerId);
           return data;
         } else {
           console.log("Updated successfully");
+          await getCartCount(customerId);
           return { success: true };
         }
       }
@@ -375,6 +375,7 @@ window.addToCart = async function (event) {
       );
       const data = await response.json();
       console.log("Inserted:", data);
+      await getCartCount(customerId);
       return data;
     }
   }
@@ -427,64 +428,65 @@ window.addToWishlist = async function (event) {
   var heart = event.target;
   var productId = heart.dataset.id;
 
-  // Toggle heart icon to solid red
-  heart.classList.remove("fa-regular");
-  heart.classList.add("fa-solid");
-  heart.style.color = "red";
+  for (var product of products) {
+    if (product.id == productId) {
+      var wishlistobj = await createWhisListToCustomer(customerId);
 
-  if (product && product.id == productId) {
-    var wishlistobj = await createWhisListToCustomer(customerId);
-
-    const checkResponse = await fetch(
-      `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/wishlist_products?wishlist_id=eq.${wishlistobj.id}&product_id=eq.${product.id}`,
-      {
-        method: "GET",
-        headers: {
-          apikey: supabaseKey,
-          Authorization: `Bearer ${supabaseKey}`,
-        },
-      },
-    );
-    const existingItem = await checkResponse.json();
-
-    if (existingItem && existingItem.length > 0) {
-      const updateResponse = await fetch(
+      const checkResponse = await fetch(
         `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/wishlist_products?wishlist_id=eq.${wishlistobj.id}&product_id=eq.${product.id}`,
         {
-          method: "PATCH",
+          method: "GET",
           headers: {
             apikey: supabaseKey,
             Authorization: `Bearer ${supabaseKey}`,
-            "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            quantity: currentQuantity,
-          }),
         },
       );
-      const data = await updateResponse.json();
-      console.log("Wishlist Updated:", data);
-      return data;
-    } else {
-      const response = await fetch(
-        `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/wishlist_products`,
-        {
-          method: "POST",
-          headers: {
-            apikey: supabaseKey,
-            Authorization: `Bearer ${supabaseKey}`,
-            "Content-Type": "application/json",
-            Prefer: "return=representation",
+      const existingItem = await checkResponse.json();
+      if (existingItem && existingItem.length > 0) {
+        const deleteResponse = await fetch(
+          `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/wishlist_products?wishlist_id=eq.${wishlistobj.id}&product_id=eq.${product.id}`,
+          {
+            method: "DELETE",
+            headers: {
+              apikey: supabaseKey,
+              Authorization: `Bearer ${supabaseKey}`,
+            },
           },
-          body: JSON.stringify({
-            wishlist_id: wishlistobj.id,
-            product_id: product.id,
-          }),
-        },
-      );
-      const data = await response.json();
-      console.log("Wishlist Inserted:", data);
-      return data;
+        );
+        if (deleteResponse.ok) {
+          heart.classList.remove("fa-solid");
+          heart.classList.add("fa-regular");
+          heart.style.color = "";
+          await getWishlistCount(customerId);
+          console.log("Wishlist Removed");
+        }
+        return null;
+      } else {
+        const response = await fetch(
+          `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/wishlist_products`,
+          {
+            method: "POST",
+            headers: {
+              apikey: supabaseKey,
+              Authorization: `Bearer ${supabaseKey}`,
+              "Content-Type": "application/json",
+              Prefer: "return=representation",
+            },
+            body: JSON.stringify({
+              wishlist_id: wishlistobj.id,
+              product_id: product.id,
+            }),
+          },
+        );
+        const data = await response.json();
+        heart.classList.remove("fa-regular");
+        heart.classList.add("fa-solid");
+        heart.style.color = "red";
+        await getWishlistCount(customerId);
+        console.log("Wishlist Inserted:", data);
+        return data;
+      }
     }
   }
 };
@@ -493,3 +495,83 @@ window.addToWishlist = async function (event) {
   await getReviewsByProductId();
   await getProductReviews();
 })();
+if (customerId) {
+  getCartCount(customerId);
+  getWishlistCount(customerId);
+}
+// cart count &wishlist count
+var wishlistCount = document.getElementById("wishlistCount");
+var cartCount = document.getElementById("cartCount");
+async function getWishlistCount(id) {
+  try {
+    const response = await fetch(
+      `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/wishlist?customer_id=eq.${id}&select=*,wishlist_products(*)`,
+      {
+        method: "GET",
+        headers: {
+          apikey: supabaseKey,
+          Authorization: `Bearer ${supabaseKey}`,
+        },
+      },
+    );
+    var wishlist = await response.json();
+    if (wishlist.length === 0) {
+      wishlistCount.innerHTML = 0;
+    } else {
+      wishlistCount.innerHTML = wishlist[0].wishlist_products.length;
+      console.log("wishlist");
+      console.log(wishlist);
+      console.log(wishlist[0].wishlist_products.length);
+    }
+  } catch (error) {
+    console.log(error);
+    wishlistCount.innerHTML = 0;
+  }
+}
+async function getCartCount(id) {
+  try {
+    const response = await fetch(
+      `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/cart?customer_id=eq.${id}&select=*,cart_products(*)`,
+      {
+        method: "GET",
+        headers: {
+          apikey: supabaseKey,
+          Authorization: `Bearer ${supabaseKey}`,
+        },
+      },
+    );
+    var cart = await response.json();
+    if (cart.length === 0) {
+      cartCount.innerHTML = 0;
+      console.log("cart is empty");
+    } else {
+      cartCount.innerHTML = cart[0].cart_products.length;
+      console.log("cart");
+      console.log(cart);
+
+      console.log(cart[0].cart_products.length);
+    }
+  } catch (error) {
+    console.log(error);
+    cartCount.innerHTML = 0;
+  }
+}
+//products
+var products;
+export async function supabaseGet(url) {
+  const res = await fetch(url, {
+    headers: {
+      apikey: supabaseKey,
+      Authorization: "Bearer " + supabaseKey,
+    },
+  });
+  return res.json();
+}
+
+async function getAllProducts() {
+  products = await supabaseGet(
+    `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/product`,
+  );
+  console.log(products);
+}
+getAllProducts();
