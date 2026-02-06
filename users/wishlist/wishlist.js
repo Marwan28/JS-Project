@@ -53,10 +53,10 @@ function displayWishListProducts() {
         </div>
         <div class="productstockInfo">
           <div class="priceInfo">
-            <span class="priceafterdiscount">${price} LE</span>
+            <span class="priceafterdiscount">${Math.round(price)} LE</span>
             ${
               hasSale
-                ? `<span class="originalprice"><del>${product.price} LE</del></span>`
+                ? `<span class="originalprice"><del>${Math.round(product.price)} LE</del></span>`
                 : ""
             }
           </div>

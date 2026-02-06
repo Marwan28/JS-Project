@@ -60,7 +60,7 @@ function displayCardProducts() {
             <div class="priceAfter">${price.toFixed(2)} LE</div>
             ${
               hasSale
-                ? `<p class="actualprice"><del>${product.price} LE</del></p>
+                ? `<p class="actualprice"><del>${product.price.toFixed(2)} LE</del></p>
             <div class="save">
               <i class="fa-solid fa-tag"></i>
               <p>save ${(product.price - price).toFixed(2)} LE</p>

@@ -59,10 +59,10 @@ function displayDetails(product) {
         </div>
         <!-- price -->
         <div class="price">
-          <p class="productPriceAfter">${price} LE</p>
+          <p class="productPriceAfter">${Math.round(price)} LE</p>
           ${
             hasSale
-              ? `<p class="productPrice"><del>${product.price}</del></p>`
+              ? `<p class="productPrice"><del>${Math.round(product.price)}</del></p>`
               : ""
           }
           ${
