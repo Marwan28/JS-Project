@@ -168,6 +168,12 @@ window.addToCart = async function (event) {
       // if found.update only
       if (existingItem && existingItem.length > 0) {
         var currentQuantity = (existingItem[0].quantity || 0) + defaultQuantity;
+        var stockLimit = Number(product.stock_quantity);
+        if (Number.isFinite(stockLimit) && stockLimit >= 0) {
+          if (currentQuantity > stockLimit) {
+            alert(`Only ${stockLimit} left in stock.`);
+          }
+        }
         const updateResponse = await fetch(
           `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/cart_products?cart_id=eq.${cartobj.id}&product_id=eq.${product.id}`,
           {
@@ -188,6 +194,12 @@ window.addToCart = async function (event) {
         return data;
       } else {
         // if not , insert
+        var stockLimit = Number(product.stock_quantity);
+        if (Number.isFinite(stockLimit) && stockLimit >= 0) {
+          if (defaultQuantity > stockLimit) {
+            alert(`Only ${stockLimit} left in stock.`);
+          }
+        }
         const response = await fetch(
           `https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/cart_products`,
           {
