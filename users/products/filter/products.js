@@ -39,6 +39,8 @@ function displayProducts(productslist) {
     } else {
       price = product.price;
     }
+    var isOutOfStock =
+      product.stock_quantity == null || Number(product.stock_quantity) <= 0;
     var ele = `
       <div class="card" id='${product.id}'>
         <div class="img">
@@ -63,14 +65,20 @@ function displayProducts(productslist) {
                 : ""
             }
           </div>
-          <h4 class="stock">${product.stock_quantity} in stock</h4>
+          <h4 class="stock">
+            ${isOutOfStock ? "Out of Stock" : `${product.stock_quantity} in stock`}
+          </h4>
         </div>
 
         <div class="cartFav">
           <i class="fa-regular fa-heart" onclick='addToWishlist(event)' data-id='${product.id}'  style="cursor:pointer;"></i>
-          <div class="button" onclick='addToCart(event)' data-id='${product.id}' data-quantity="0">
+          <div class="button"
+               onclick='${isOutOfStock ? "" : "addToCart(event)"}'
+               data-id='${product.id}'
+               data-quantity="0"
+               style="${isOutOfStock ? "pointer-events:none; opacity:0.5;" : ""}">
             <i class="fa-solid fa-cart-shopping"></i>
-            <h4>Add To Cart</h4>
+            <h4>${isOutOfStock ? "Out of Stock" : "Add To Cart"}</h4>
           </div>
         </div>
       </div>
