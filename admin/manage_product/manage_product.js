@@ -259,7 +259,6 @@ var addModal = document.getElementById("addModal");
 
 addBtn.onclick = function () {
   addModal.style.display = "flex";
-  // ملء قائمة الفئات في مودال الإضافة أيضاً
   var addSelect = document.getElementById("add-category");
   addSelect.innerHTML = document.getElementById("edit-category").innerHTML;
 };
@@ -281,7 +280,6 @@ function validateAddForm() {
   var img = document.getElementById("add-image").value.trim();
   var desc = document.getElementById("add-description").value.trim();
 
-  // مسح الأخطاء القديمة
   var errors = addModal.getElementsByClassName("error");
   for (var i = 0; i < errors.length; i++) errors[i].innerHTML = "";
 
