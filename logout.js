@@ -1,5 +1,8 @@
+const BASE_URL = location.hostname.includes("github.io")
+  ? "/JS-Project/"
+  : "/";
 export function logout() {
   localStorage.clear();
-  window.location.replace("../../../index.html");
+  window.location.replace(BASE_URL + "index.html");
   console.log("log out function");
 }
