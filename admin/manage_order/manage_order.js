@@ -1,10 +1,7 @@
+import { headers } from "../../supabase/supabase_client.js";
 import { logout } from "../../logout.js";
 document.getElementById("logout").addEventListener("click", logout);
-const headers = {
-  apikey: "sb_publishable_vs3dcyNAq9MoeQH77xkVuA_fGdHPIq6",
-  Authorization: "Bearer sb_publishable_vs3dcyNAq9MoeQH77xkVuA_fGdHPIq6",
-  "Content-Type": "application/json",
-};
+
 var orders = [];
 var filteredOrders = [];
 var mainDiv = document.getElementById("orders");
@@ -102,8 +99,6 @@ function loadOrders(orders) {
     })
     .join("");
 }
-// var confirm_btn = document.getElementById("confirm_btn");
-// var reject_btn = document.getElementById("reject_btn");
 
 window.updateOrderStatus = async function (button, newStatus) {
   const order = JSON.parse(button.dataset.order);
@@ -118,10 +113,6 @@ window.updateOrderStatus = async function (button, newStatus) {
         body: JSON.stringify({ status: newStatus }),
       },
     );
-    // console.log(response);
-    // const data = response.json();
-    // console.log('data');
-    // console.log(data);
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -161,8 +152,6 @@ window.updateOrderStatus = async function (button, newStatus) {
 
     statusFilter.value = "all";
     getAllOrders();
-
-    // alert(`Order #${order.id} ${newStatus} successfully!`);
   } catch (error) {
     console.error("Error updating order:", error);
     alert("Failed to update order. Please try again.");

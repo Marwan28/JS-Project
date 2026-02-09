@@ -1,13 +1,10 @@
+import { headers } from "../../supabase/supabase_client.js";
 import { logout } from "../../logout.js";
 document.getElementById("logout").addEventListener("click", logout);
 var userId = localStorage.getItem("currentUserId");
 var wishlistCount = document.getElementById("wishlistCount");
 var cartCount = document.getElementById("cartCount");
-const headers = {
-  apikey: "sb_publishable_vs3dcyNAq9MoeQH77xkVuA_fGdHPIq6",
-  Authorization: "Bearer sb_publishable_vs3dcyNAq9MoeQH77xkVuA_fGdHPIq6",
-  "Content-Type": "application/json",
-};
+
 var orders = [];
 var userRatingsProductsIds = [];
 var filteredOrders = [];

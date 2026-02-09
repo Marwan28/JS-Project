@@ -1,4 +1,4 @@
-import { supabase } from "../supabase/supabase_client.js";
+import { supabase, supabaseKey } from "../supabase/supabase_client.js";
 var registerNewUserData = {
   fullName: "",
   email: "",
@@ -111,14 +111,8 @@ function validateConfirmPassword() {
 
 var xhr = new XMLHttpRequest();
 xhr.open("GET", "https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/profiles");
-xhr.setRequestHeader(
-  "apikey",
-  "sb_publishable_vs3dcyNAq9MoeQH77xkVuA_fGdHPIq6",
-);
-xhr.setRequestHeader(
-  "Authorization",
-  "Bearer sb_publishable_vs3dcyNAq9MoeQH77xkVuA_fGdHPIq6",
-);
+xhr.setRequestHeader("apikey", supabaseKey);
+xhr.setRequestHeader("Authorization", "Bearer " + supabaseKey);
 xhr.send();
 xhr.addEventListener("readystatechange", function () {
   console.log(this.readyState);
@@ -172,14 +166,8 @@ async function signUp(email, password, fullName, phone, address) {
 async function createProfile(id, fullName, phone, address) {
   var xhr = new XMLHttpRequest();
   xhr.open("POST", "https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/profiles");
-  xhr.setRequestHeader(
-    "apikey",
-    "sb_publishable_vs3dcyNAq9MoeQH77xkVuA_fGdHPIq6",
-  );
-  xhr.setRequestHeader(
-    "Authorization",
-    "Bearer sb_publishable_vs3dcyNAq9MoeQH77xkVuA_fGdHPIq6",
-  );
+  xhr.setRequestHeader("apikey", supabaseKey);
+  xhr.setRequestHeader("Authorization", "Bearer " + supabaseKey);
   xhr.setRequestHeader("Content-Type", "application/json");
 
   xhr.setRequestHeader("Prefer", "return=representation");

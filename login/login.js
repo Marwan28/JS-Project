@@ -1,4 +1,4 @@
-import { supabase } from "../supabase/supabase_client.js";
+import { supabase, supabaseKey } from "../supabase/supabase_client.js";
 
 var emailInput = document.getElementById("log_in_email");
 var passwordInput = document.getElementById("log_in_password");
@@ -45,14 +45,8 @@ async function getUserProfile(userId) {
       "https://ujichqxxfsbgdjorkolz.supabase.co/rest/v1/profiles?id=eq." +
         userId,
     );
-    xhr.setRequestHeader(
-      "apikey",
-      "sb_publishable_vs3dcyNAq9MoeQH77xkVuA_fGdHPIq6",
-    );
-    xhr.setRequestHeader(
-      "Authorization",
-      "Bearer sb_publishable_vs3dcyNAq9MoeQH77xkVuA_fGdHPIq6",
-    );
+    xhr.setRequestHeader("apikey", supabaseKey);
+    xhr.setRequestHeader("Authorization", "Bearer " + supabaseKey);
     xhr.setRequestHeader("Content-Type", "application/json");
 
     xhr.setRequestHeader("Prefer", "return=representation");

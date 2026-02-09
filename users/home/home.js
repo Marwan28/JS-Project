@@ -1,13 +1,12 @@
+import {
+  supabaseKey,
+  supabaseUrl,
+  headers,
+} from "../../supabase/supabase_client.js";
 import { logout } from "../../logout.js";
 document.getElementById("logout").addEventListener("click", logout);
-var supabaseUrl = "https://ujichqxxfsbgdjorkolz.supabase.co";
-var supabaseKey = "sb_publishable_vs3dcyNAq9MoeQH77xkVuA_fGdHPIq6";
 var userId = localStorage.getItem("currentUserId");
-const headers = {
-  apikey: "sb_publishable_vs3dcyNAq9MoeQH77xkVuA_fGdHPIq6",
-  Authorization: "Bearer sb_publishable_vs3dcyNAq9MoeQH77xkVuA_fGdHPIq6",
-  "Content-Type": "application/json",
-};
+
 // var navBar = document.querySelector(".navbar");
 // window.addEventListener("scroll", function () {
 //     if (window.scrollY >= 400) {

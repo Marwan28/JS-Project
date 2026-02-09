@@ -1,8 +1,8 @@
+import { supabaseKey , supabaseUrl} from "../../supabase/supabase_client.js";
 import { logout } from "../../logout.js";
 document.getElementById("logout").addEventListener("click", logout);
 var existingCategories = [];
-var supabaseUrl = "https://ujichqxxfsbgdjorkolz.supabase.co";
-var supabaseKey = "sb_publishable_vs3dcyNAq9MoeQH77xkVuA_fGdHPIq6";
+
 
 var modal = document.getElementById("modalOverlay");
 var deleteModal = document.getElementById("deleteModal");

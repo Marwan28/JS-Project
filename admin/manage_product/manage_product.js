@@ -1,11 +1,9 @@
+import { supabaseKey, supabaseUrl } from "../../supabase/supabase_client.js";
 import { logout } from "../../logout.js";
 document.getElementById("logout").addEventListener("click", logout);
-const supabaseUrl = "https://ujichqxxfsbgdjorkolz.supabase.co";
-const supabaseKey = "sb_publishable_vs3dcyNAq9MoeQH77xkVuA_fGdHPIq6";
 
 var productData = [];
 var categoryData = [];
-
 
 var xhrProducts = new XMLHttpRequest();
 xhrProducts.open(
@@ -92,7 +90,6 @@ document.getElementById("confirmDelete").onclick = function () {
   xhr.send();
 };
 
-
 var xhrCategories = new XMLHttpRequest();
 xhrCategories.open("GET", supabaseUrl + "/rest/v1/category?select=*", true);
 
@@ -116,7 +113,6 @@ xhrCategories.onreadystatechange = function () {
   }
 };
 xhrCategories.send();
-
 
 document.addEventListener("click", function (e) {
   if (e.target.classList.contains("btn-edit")) {
@@ -144,11 +140,9 @@ document.addEventListener("click", function (e) {
   }
 });
 
-
 document.getElementById("closeModal").onclick = function () {
   document.getElementById("editModal").style.display = "none";
 };
-
 
 function clearErrors() {
   var errors = document.getElementsByClassName("error");
@@ -215,7 +209,6 @@ for (var i = 0; i < inputs.length; i++) {
   };
 }
 
-
 document.getElementById("saveEdit").onclick = function () {
   document.getElementById("saveEdit").onclick = function () {
     if (!validateForm()) return;
@@ -268,7 +261,6 @@ document.getElementById("closeAddModal").onclick = document.getElementById(
 ).onclick = function () {
   addModal.style.display = "none";
 };
-
 
 function validateAddForm() {
   var isValid = true;

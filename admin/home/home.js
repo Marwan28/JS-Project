@@ -1,8 +1,8 @@
+import { supabaseKey } from "../../supabase/supabase_client.js";
 import { logout } from "../../logout.js";
 document.getElementById("logout").addEventListener("click", logout);
 // categories data
 const supabaseUrl = "https://ujichqxxfsbgdjorkolz.supabase.co";
-const supabaseKey = "sb_publishable_vs3dcyNAq9MoeQH77xkVuA_fGdHPIq6";
 var xhr = new XMLHttpRequest();
 xhr.open("GET", supabaseUrl + "/rest/v1/category", true);
 
